@@ -103,13 +103,228 @@
         background-size:cover,cover!important; background-position:center,center!important; background-attachment:fixed,fixed!important;
       }
       body.entry-screen-active { box-sizing:border-box;height:100dvh;min-height:0;overflow:hidden!important; }
+      body.game-screen-active { align-items:flex-start!important; }
+      #gameMain.solo-quiz-active { width:min(100%,1360px)!important;max-width:calc(100vw - 40px)!important;padding:clamp(16px,2vw,28px)!important;border-color:rgba(192,151,84,.78)!important;background:linear-gradient(180deg,rgba(255,250,244,.97),rgba(247,239,252,.97))!important; }
+      #quizScreen.solo-mode { display:grid;grid-template-columns:minmax(238px,285px) minmax(0,1fr);grid-template-areas:"header header" "sidebar progress" "sidebar prompt" "sidebar options" "sidebar confirm" "sidebar help";align-items:stretch;gap:clamp(10px,1.3vw,16px) clamp(14px,1.8vw,22px); }
+      #quizScreen.solo-mode > .quiz-header { grid-area:header;display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,1fr) minmax(0,1fr);align-items:center;gap:12px;padding:0 0 13px;border-bottom:1px solid #e4d2ab!important; }
+      #quizScreen.solo-mode .quiz-header-left { min-width:0;display:flex;align-items:center;gap:10px; }
+      #quizScreen.solo-mode #soloBackToNameButton { flex:none;min-height:40px;padding:8px 12px!important;font-size:.82rem; }
+      #quizScreen.solo-mode #questionNum { font-size:.82rem;white-space:nowrap; }
+      #quizScreen.solo-mode .quiz-board-title { display:grid;justify-items:center;gap:2px;min-width:0;text-align:center; }
+      #quizScreen.solo-mode .quiz-board-title strong { color:#4d3370;font-size:clamp(1rem,1.55vw,1.3rem);font-weight:800; }
+      #quizScreen.solo-mode .quiz-board-title span { max-width:100%;overflow:hidden;color:#735e83;font-size:.72rem;font-weight:700;text-overflow:ellipsis;white-space:nowrap; }
+      #quizScreen.solo-mode .quiz-header-right { display:flex;justify-content:flex-end;align-items:center;gap:10px; }
+      #quizScreen.solo-mode #timerContainer { min-width:88px;min-height:42px; }
+      #quizScreen.solo-mode #streakBadge { color:#855526!important; }
+      #quizScreen.solo-mode .quiz-runtime-controls { display:none; }
+      #quizScreen.solo-mode #quizProgressTrack { display:none; }
+      #quizScreen.solo-mode .quiz-progress-dots { grid-area:progress;display:flex;justify-content:center;align-items:center;gap:clamp(7px,1.3vw,15px);min-height:24px;padding:0 4px; }
+      .quiz-progress-dot { width:13px;height:13px;border:1.5px solid #d6c4df;border-radius:50%;background:#fffaf4;box-shadow:0 1px 3px rgba(72,48,99,.08); }
+      .quiz-progress-dot.is-current { border-color:#8660ad;background:radial-gradient(circle at 35% 30%,#d7b9f1,#8057ad 70%);box-shadow:0 0 0 3px rgba(128,87,173,.13); }
+      .quiz-progress-dot.is-correct { border-color:#32976e;background:#45ad80; }
+      .quiz-progress-dot.is-wrong { border-color:#d35465;background:#e56b78; }
+      .quiz-progress-dot.is-timeout { border-color:#a79bad;background:#b8aebf; }
+      .quiz-progress-dot.is-correct::after,.quiz-progress-dot.is-wrong::after,.quiz-progress-dot.is-timeout::after { display:grid;place-items:center;width:100%;height:100%;color:#fff;font-size:9px;font-weight:900;line-height:1; }
+      .quiz-progress-dot.is-correct::after { content:"✓"; }
+      .quiz-progress-dot.is-wrong::after { content:"×"; }
+      .quiz-progress-dot.is-timeout::after { content:"–"; }
+      .quiz-sidebar-details { grid-area:sidebar;position:relative;display:flex;flex-direction:column;min-width:0;min-height:540px;overflow:hidden;border:1px solid #d8bd8b;border-radius:22px;background:linear-gradient(180deg,rgba(255,253,249,.97),rgba(248,241,251,.97));box-shadow:0 7px 20px rgba(72,48,99,.065),inset 0 0 0 2px rgba(255,255,255,.76); }
+      .quiz-sidebar-details > summary { display:flex;align-items:center;gap:9px;padding:14px 16px;color:#503875;font-weight:800;list-style:none; }
+      .quiz-sidebar-details > summary::-webkit-details-marker { display:none; }
+      .quiz-sidebar-details > summary i { color:#b78342; }
+      .quiz-sidebar-details > summary .sidebar-toggle-icon { display:none;margin-left:auto;transition:transform .2s ease; }
+      .quiz-play-stats { display:grid;gap:0;padding:0 16px; }
+      .quiz-play-stat { display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid #eee5ef; }
+      .quiz-play-stat:last-child { border-bottom:0; }
+      .quiz-play-stat-icon { display:grid;place-items:center;width:36px;height:36px;border:1px solid #efe3d4;border-radius:50%;background:#fff;color:#a3773d;font-size:17px; }
+      .quiz-play-stat-label { display:block;color:#806b8e;font-size:.75rem;font-weight:600; }
+      .quiz-play-stat-value { display:block;margin-top:1px;color:#503875;font-size:1.05rem;font-variant-numeric:tabular-nums;font-weight:800;line-height:1.2; }
+      #soloWrongStat { color:#bf5062; }
+      #soloCorrectStat { color:#27865f; }
+      .quiz-play-stat-note { display:block;margin-top:2px;color:#83778f;font-size:.66rem; }
+      .quiz-sidebar-mascot { position:relative;display:flex;flex:1;align-items:flex-end;justify-content:center;min-height:210px;margin-top:auto;padding:4px 4px 0; }
+      .quiz-sidebar-mascot img { display:block;width:min(100%,270px);max-height:265px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 7px 12px rgba(80,47,111,.18)); }
+      .quiz-mascot-bubble { position:absolute;top:14px;right:10px;z-index:1;max-width:170px;padding:10px 12px;border:1px solid #d6bfdf;border-radius:15px;background:rgba(255,253,248,.97);box-shadow:0 4px 13px rgba(72,48,99,.1);color:#503875;font-size:.76rem;font-weight:700;line-height:1.45;text-align:center; }
+      .quiz-mascot-bubble::after { content:"";position:absolute;bottom:-7px;left:22px;width:12px;height:12px;border-right:1px solid #d6bfdf;border-bottom:1px solid #d6bfdf;background:#fffdf8;transform:rotate(45deg); }
+      #quizScreen.solo-mode .quiz-prompt-card { grid-area:prompt;padding:clamp(17px,2.1vw,26px);border-color:#e5cda7;background:linear-gradient(150deg,rgba(255,253,249,.98),rgba(255,248,237,.97)); }
+      #quizScreen.solo-mode #questionText { font-family:'Kanit',sans-serif!important;font-size:clamp(1.2rem,2vw,1.7rem)!important; }
+      #quizScreen.solo-mode .quiz-hint-card { background:linear-gradient(135deg,#fff9ef,#fff4e3)!important; }
+      #quizScreen.solo-mode #optionsGrid { grid-area:options;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:0; }
+      #quizScreen.solo-mode .option-btn { display:grid;grid-template-columns:30px minmax(0,1fr) 22px;align-items:center;gap:10px;min-height:78px!important;padding:14px 16px!important;text-align:left; }
+      #quizScreen.solo-mode .option-letter { display:grid;place-items:center;width:28px;height:28px;border:1px solid rgba(104,75,139,.15);border-radius:50%;background:rgba(255,255,255,.68);color:#654b84!important;font-size:.77rem;font-weight:800; }
+      #quizScreen.solo-mode .option-label { min-width:0;color:#352747!important;line-height:1.45;overflow-wrap:anywhere; }
+      #quizScreen.solo-mode .option-btn .check-icon { justify-self:center;color:#887b95!important;font-size:18px; }
+      #quizScreen.solo-mode .option-btn.is-selected { border-color:#8760bc!important;box-shadow:0 0 0 3px rgba(135,96,188,.16),0 5px 13px rgba(83,58,110,.1)!important; }
+      #quizScreen.solo-mode .option-btn.is-selected .option-letter { background:#805db0;color:#fff!important; }
+      #quizScreen.solo-mode .option-btn.is-selected .check-icon { color:#805db0!important; }
+      #quizScreen.solo-mode .option-btn:nth-child(1) { background:linear-gradient(140deg,#f2eafb,#eee4f8)!important;border-color:#d4c0e8!important; }
+      #quizScreen.solo-mode .option-btn:nth-child(2) { background:linear-gradient(140deg,#edf4ff,#e8f1ff)!important;border-color:#c5d6f1!important; }
+      #quizScreen.solo-mode .option-btn:nth-child(3) { background:linear-gradient(140deg,#fff1f2,#ffedef)!important;border-color:#efc5ce!important; }
+      #quizScreen.solo-mode .option-btn:nth-child(4) { background:linear-gradient(140deg,#fff7e9,#fff3df)!important;border-color:#ebd2a7!important; }
+      #quizScreen.solo-mode .option-btn.is-correct-answer { background:linear-gradient(140deg,#e4f5ec,#d9f0e4)!important;border-color:#54a77f!important;color:#205b42!important; }
+      #quizScreen.solo-mode .option-btn.is-correct-answer .option-label { color:#205b42!important; }
+      #quizScreen.solo-mode .option-btn.is-correct-answer .check-icon { color:#27865f!important; }
+      #quizScreen.solo-mode .option-btn.is-wrong-answer { background:linear-gradient(140deg,#fff0f1,#ffe6e9)!important;border-color:#d96b77!important;color:#8e3342!important; }
+      #quizScreen.solo-mode .option-btn.is-wrong-answer .option-label { color:#8e3342!important; }
+      #quizScreen.solo-mode .option-btn.is-wrong-answer .check-icon { color:#c84d60!important; }
+      #quizScreen.solo-mode #confirmSoloAnswerButton { grid-area:confirm;justify-self:center;min-width:min(100%,280px);min-height:54px;padding:12px 26px;border:2px solid #c69b54;border-radius:999px;background:linear-gradient(115deg,#694295,#8658b0 55%,#70469a);color:#fff8ed;font-size:1rem;font-weight:800;box-shadow:0 4px 0 rgba(94,57,127,.18),inset 0 1px 0 rgba(255,255,255,.26);transition:transform .18s ease,filter .18s ease,opacity .18s ease; }
+      #quizScreen.solo-mode #confirmSoloAnswerButton:not(:disabled):hover { transform:translateY(-2px);filter:brightness(1.07); }
+      #quizScreen.solo-mode #confirmSoloAnswerButton:disabled { opacity:.55;cursor:not-allowed; }
+      #quizScreen.solo-mode button:focus-visible { outline:3px solid #b68a42;outline-offset:3px; }
+      #quizScreen.solo-mode #keyboardHelpText { grid-area:help;margin:0;text-align:center; }
+      #quizScreen.teamwork-mode { display:flex;flex-direction:column; }
+      #quizScreen.teamwork-mode .quiz-board-title,#quizScreen.teamwork-mode .quiz-sidebar-details,#quizScreen.teamwork-mode .quiz-progress-dots,#quizScreen.teamwork-mode #confirmSoloAnswerButton { display:none!important; }
+      #quizScreen.teamwork-mode > .quiz-header { display:flex; }
+      #quizScreen.teamwork-mode .quiz-header-right { display:contents; }
+      #quizScreen.teamwork-mode #optionsGrid { min-width:0; }
+      #quizScreen.teamwork-mode .quiz-prompt-card { flex:1 1 auto; }
+      #quizScreen.teamwork-mode .quiz-hint-card { border-color:#d5b574!important;background:#fff8e9!important; }
+      #quizScreen.teamwork-mode .hint-heading {
+        margin-bottom:10px!important;color:#704719!important;font-size:clamp(.9rem,1.25vw,1.05rem)!important;font-weight:800;
+      }
+      #quizScreen.teamwork-mode #hintText {
+        color:#352747!important;font-size:clamp(1.12rem,1.65vw,1.42rem)!important;font-weight:600;
+        line-height:1.7!important;text-shadow:0 1px 0 rgba(255,255,255,.7);
+      }
+      #quizScreen.teamwork-mode .option-btn { min-height:clamp(92px,13vh,132px)!important; }
+      #quizScreen.teamwork-mode #keyboardHelpText { margin:0; }
+      #gameMain.teamwork-active #teamworkMenuButton {
+        display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:none;min-height:42px;padding:8px 14px;
+        border:1px solid #d5b574;border-radius:12px;background:linear-gradient(135deg,#fffaf0,#f3eafa);
+        box-shadow:0 3px 0 rgba(111,76,141,.12);color:#543875;font-size:.9rem;font-weight:800;white-space:nowrap;
+      }
+      #gameMain.teamwork-active #teamworkMenuButton:hover { background:#f0e8fb;transform:translateY(-1px); }
+      #gameMain.teamwork-active #teamworkMenuButton:focus-visible { outline:3px solid #b68a42;outline-offset:3px; }
+      #quizScreen.teamwork-mode .option-btn {
+        display:grid!important;grid-template-columns:32px minmax(0,1fr) 22px;align-items:center;justify-content:initial;
+        gap:12px;min-width:0;min-height:82px!important;height:auto;padding:16px 18px!important;
+        white-space:normal;text-align:left;
+      }
+      #quizScreen.teamwork-mode .option-letter {
+        display:grid;place-items:center;width:28px;height:28px;min-width:28px;border-radius:50%;
+        background:rgba(255,255,255,.72);color:#654b84!important;font-size:.8rem;font-weight:800;line-height:1;
+      }
+      #quizScreen.teamwork-mode .option-label {
+        display:block;min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:normal;
+        color:#352747!important;line-height:1.45;
+      }
+      #quizScreen.teamwork-mode .option-btn .check-icon { justify-self:center;font-size:18px; }
+      #gameMain:fullscreen {
+        box-sizing:border-box;width:100vw!important;max-width:none!important;height:100dvh!important;max-height:100dvh!important;
+        display:flex!important;flex-direction:column!important;overflow:auto!important;
+        padding:clamp(20px,3vw,44px)!important;border-radius:0!important;
+      }
+      #gameMain:fullscreen #quizScreen.teamwork-mode {
+        display:flex;flex:1 1 auto;flex-direction:column;gap:clamp(10px,1.6vh,16px)!important;
+        width:100%;min-width:0;min-height:0;height:auto;overflow:visible;
+      }
+      #gameMain:fullscreen #quizScreen.teamwork-mode > :not([hidden]) ~ :not([hidden]) { margin-top:0!important; }
+      #gameMain:fullscreen #quizScreen.teamwork-mode > .quiz-header { flex:none;padding-bottom:14px; }
+      #gameMain:fullscreen #quizScreen.teamwork-mode #quizProgressTrack { flex:none;height:10px;margin:0; }
+      #gameMain:fullscreen #quizScreen.teamwork-mode .quiz-prompt-card {
+        display:flex;flex:0 0 auto;flex-direction:column;justify-content:center;min-height:0;
+        padding:clamp(16px,2vw,26px);border-radius:26px;
+      }
+      #gameMain:fullscreen #quizScreen.teamwork-mode #questionText { font-size:clamp(1.45rem,2.6vw,2.15rem)!important; }
+      #gameMain:fullscreen #quizScreen.teamwork-mode .quiz-hint-card {
+        display:flex;flex:0 0 auto;flex-direction:column;justify-content:flex-start;
+        padding:clamp(14px,1.8vw,22px)!important;border-color:#d5b574!important;background:#fff8e9!important;
+      }
+      #gameMain:fullscreen #quizScreen.teamwork-mode .hint-heading { font-size:clamp(1rem,1.4vw,1.15rem)!important; }
+      #gameMain:fullscreen #quizScreen.teamwork-mode #hintText {
+        margin:0;color:#30223f!important;font-size:clamp(1.5rem,2.4vw,2rem)!important;font-weight:700;
+        line-height:1.55!important;
+      }
+      #gameMain:fullscreen #quizScreen.teamwork-mode #optionsGrid {
+        display:grid;flex:1 1 auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(78px,1fr));
+        align-content:stretch;gap:clamp(10px,1.5vh,16px);min-height:156px;padding:0;
+      }
+      #gameMain:fullscreen #quizScreen.teamwork-mode .option-btn {
+        height:100%;min-height:0!important;padding:clamp(14px,1.5vw,22px)!important;border-radius:22px!important;
+        grid-template-columns:clamp(42px,4vw,58px) minmax(0,1fr) clamp(26px,3vw,38px);gap:clamp(14px,2vw,24px);
+        font-size:clamp(1.2rem,2.2vw,1.8rem)!important;
+      }
+      #gameMain:fullscreen #quizScreen.teamwork-mode .option-letter {
+        width:clamp(38px,3.8vw,54px);height:clamp(38px,3.8vw,54px);min-width:clamp(38px,3.8vw,54px);
+        font-size:clamp(1.1rem,1.8vw,1.45rem);
+      }
+      #gameMain:fullscreen #quizScreen.teamwork-mode .option-label { line-height:1.5; }
+      #gameMain:fullscreen #quizScreen.teamwork-mode .option-btn .check-icon { font-size:clamp(22px,2.5vw,32px); }
+      #gameMain:fullscreen #quizScreen.teamwork-mode #keyboardHelpText {
+        flex:none;margin:8px 0 0!important;color:#806b8e!important;font-size:clamp(.9rem,1.2vw,1.1rem);
+      }
+      @media(max-height:680px) {
+        #gameMain:fullscreen { padding:16px!important; }
+        #gameMain:fullscreen #quizScreen.teamwork-mode { gap:8px!important; }
+        #gameMain:fullscreen #quizScreen.teamwork-mode .quiz-prompt-card { padding:14px 18px; }
+        #gameMain:fullscreen #quizScreen.teamwork-mode #questionText { font-size:clamp(1.3rem,3vh,1.8rem)!important; }
+        #gameMain:fullscreen #quizScreen.teamwork-mode .quiz-hint-card { padding:10px 14px!important; }
+        #gameMain:fullscreen #quizScreen.teamwork-mode .hint-heading { margin-bottom:6px!important;font-size:.82rem!important; }
+        #gameMain:fullscreen #quizScreen.teamwork-mode #hintText { font-size:clamp(1.2rem,2.7vh,1.5rem)!important;line-height:1.5!important; }
+        #gameMain:fullscreen #quizScreen.teamwork-mode #optionsGrid { min-height:156px;gap:8px; }
+        #gameMain:fullscreen #quizScreen.teamwork-mode .option-btn { padding:14px 18px!important; }
+      }
+      @media(max-width:820px) {
+        #gameMain.solo-quiz-active { max-width:calc(100vw - 24px)!important; }
+        #quizScreen.solo-mode { grid-template-columns:minmax(205px,245px) minmax(0,1fr);gap:11px 14px; }
+        .quiz-sidebar-details { min-height:505px; }
+        .quiz-sidebar-mascot { min-height:175px; }
+        .quiz-sidebar-mascot img { max-height:225px; }
+        .quiz-mascot-bubble { right:5px;max-width:144px;font-size:.7rem; }
+        #quizScreen.solo-mode .quiz-header { grid-template-columns:minmax(0,1fr) minmax(140px,.8fr) minmax(0,1fr); }
+        #quizScreen.solo-mode .quiz-header-left { flex-wrap:wrap; }
+        #quizScreen.solo-mode .option-btn { min-height:72px!important;padding:12px!important; }
+      }
+      @media(max-width:620px) {
+        #gameMain.solo-quiz-active { max-width:calc(100vw - 20px)!important;padding:12px!important; }
+        #quizScreen.solo-mode { grid-template-columns:minmax(0,1fr);grid-template-areas:"header" "progress" "sidebar" "prompt" "options" "confirm" "help";gap:10px; }
+        #quizScreen.solo-mode > .quiz-header { grid-template-columns:minmax(0,1fr) auto;gap:8px;padding-bottom:9px; }
+        #quizScreen.solo-mode .quiz-header-left { gap:6px; }
+        #quizScreen.solo-mode #soloBackToNameButton { min-height:36px;padding:6px 8px!important;font-size:.7rem; }
+        #quizScreen.solo-mode #questionNum { padding:5px 8px;font-size:.7rem; }
+        #quizScreen.solo-mode .quiz-board-title { display:none; }
+        #quizScreen.solo-mode .quiz-header-right { grid-column:2;grid-row:1; }
+        #quizScreen.solo-mode #timerContainer { min-width:72px;min-height:38px;padding:5px 10px; }
+        #quizScreen.solo-mode #timerText { font-size:1.1rem; }
+        #quizScreen.solo-mode .quiz-progress-dots { min-height:20px;gap:clamp(5px,2vw,10px); }
+        .quiz-progress-dot { width:11px;height:11px; }
+        .quiz-sidebar-details { min-height:0;overflow:visible; }
+        .quiz-sidebar-details > summary { min-height:43px;padding:9px 12px;cursor:pointer; }
+        .quiz-sidebar-details > summary .sidebar-toggle-icon { display:block; }
+        .quiz-sidebar-details[open] > summary .sidebar-toggle-icon { transform:rotate(180deg); }
+        .quiz-play-stats { grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px;padding:0 12px 8px; }
+        .quiz-play-stat { grid-template-columns:31px minmax(0,1fr);gap:7px;padding:8px 0; }
+        .quiz-play-stat-icon { width:30px;height:30px;font-size:14px; }
+        .quiz-play-stat-value { font-size:.9rem; }
+        .quiz-sidebar-mascot { display:flex;justify-content:flex-start;min-height:128px;padding-left:10px; }
+        .quiz-sidebar-mascot img { width:min(48%,155px);max-height:158px; }
+        .quiz-mascot-bubble { top:8px;right:8px;max-width:155px;font-size:.68rem; }
+        #quizScreen.solo-mode .quiz-prompt-card { padding:14px;border-radius:17px; }
+        #quizScreen.solo-mode #questionText { font-size:1.2rem!important; }
+        #quizScreen.solo-mode .quiz-hint-card { padding:12px!important; }
+        #quizScreen.solo-mode #hintText { font-size:.94rem!important; }
+        #quizScreen.solo-mode #optionsGrid { grid-template-columns:minmax(0,1fr);gap:8px; }
+        #quizScreen.solo-mode .option-btn { min-height:62px!important;padding:10px 12px!important; }
+        #quizScreen.solo-mode #confirmSoloAnswerButton { width:100%;min-height:50px; }
+        #quizScreen.solo-mode #keyboardHelpText { font-size:.7rem; }
+      }
+      @media(max-width:520px) {
+        #quizScreen.teamwork-mode .option-btn {
+          grid-template-columns:28px minmax(0,1fr) 20px;gap:9px;min-height:76px!important;padding:12px 14px!important;
+          font-size:clamp(15px,4vw,17px)!important;
+        }
+        #quizScreen.teamwork-mode .option-letter { width:26px;height:26px;min-width:26px; }
+      }
+      @media(prefers-reduced-motion:reduce) {
+        #quizScreen.solo-mode *,#quizScreen.solo-mode *::before,#quizScreen.solo-mode *::after { scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important; }
+      }
       #introExperience {
         position:fixed;inset:0;z-index:40;box-sizing:border-box;overflow:hidden;
         display:flex;align-items:center;justify-content:center;
         padding:clamp(72px,10dvh,108px) 12px clamp(8px,2dvh,20px);
         background:linear-gradient(180deg,rgba(38,20,64,.08),rgba(255,248,239,.14));
       }
-      #introExperience.hidden,#introClosedStage.hidden,#introOpenStage.hidden,#gameMain.hidden { display:none!important; }
+      #introExperience.hidden,#introClosedStage.hidden,#introOpenStage.hidden,#soloQrStage.hidden,#gameMain.hidden { display:none!important; }
       .intro-stage { width:100%;height:100%;min-height:0;display:flex;align-items:center;justify-content:center; }
       .intro-closed-content { width:min(100%,1060px);display:flex;flex-direction:column;align-items:center;gap:clamp(12px,3vh,26px);text-align:center; }
       .intro-closed-art {
@@ -131,16 +346,16 @@
       .intro-instruction p { margin:.55rem 0 0;color:#625273;font-size:clamp(.88rem,1.8vw,1.05rem); }
       .intro-open-content {
         position:relative;container-type:size;flex:none;
-        width:min(92vw,calc((100dvh - clamp(100px,14dvh,128px)) * .6667),620px);
+        width:min(92vw,calc((100dvh - clamp(105px,16dvh,150px)) * .6667),520px);
         aspect-ratio:2 / 3;
       }
       .intro-open-parchment { position:absolute;inset:0;width:100%;height:100%;object-fit:fill;filter:drop-shadow(0 20px 38px rgba(46,25,69,.24)); }
       .intro-open-copy {
         position:absolute;top:21%;bottom:12%;left:16%;right:16%;
-        display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+        display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
         text-align:center;color:#492d56;padding:4px 0;
       }
-      .intro-open-copy > div:first-child { width:100%; }
+      .intro-open-copy > div:first-child { width:100%;flex:none; }
       .intro-open-copy h1 {
         max-width:22em;margin:0 auto;padding-bottom:1.2cqh;
         background:linear-gradient(90deg,transparent 18%,rgba(174,133,79,.2) 32%,rgba(174,133,79,.72) 50%,rgba(174,133,79,.2) 68%,transparent 82%) bottom center / 72% 1px no-repeat;
@@ -148,6 +363,87 @@
       }
       .intro-open-copy h1:focus { outline:none; }
       .intro-open-copy p { max-width:38em;margin:1.5cqh auto 0;color:#6c5572;font-size:clamp(8px,1.75cqh,13px);line-height:1.5; }
+      .intro-mode-choices {
+        position:absolute;top:35%;left:0;right:0;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        gap:clamp(5px,1.2cqh,12px);
+      }
+      .intro-mode-choice {
+        display:block;width:min(70cqw,270px);padding:0;border:0;background:transparent;
+        cursor:pointer;transition:filter .2s ease,transform .2s ease;
+      }
+      .intro-mode-choice img { display:block;width:100%;height:auto;object-fit:contain; }
+      .intro-mode-choice:hover { filter:brightness(1.05) drop-shadow(0 4px 8px rgba(92,61,134,.24));transform:translateY(-2px); }
+      .intro-mode-choice:active { transform:scale(.985); }
+      .intro-mode-choice:focus-visible { outline:3px solid #8063b4;outline-offset:4px;border-radius:14px; }
+      .intro-mode-hint {
+        position:absolute;top:23%;left:10%;right:10%;margin:0;
+        color:#80664f;font-size:clamp(8px,1.55cqh,12px);font-weight:600;
+        text-align:center;text-shadow:0 1px 0 rgba(255,255,255,.75);
+      }
+      .intro-qr-copy {
+        position:absolute;top:21%;bottom:12%;left:16%;right:16%;
+        display:flex;flex-direction:column;align-items:center;text-align:center;color:#492d56;padding:4px 0;
+      }
+      .intro-qr-copy h1 {
+        max-width:22em;margin:0 auto;padding-bottom:1.2cqh;
+        background:linear-gradient(90deg,transparent 18%,rgba(174,133,79,.2) 32%,rgba(174,133,79,.72) 50%,rgba(174,133,79,.2) 68%,transparent 82%) bottom center / 72% 1px no-repeat;
+        font-size:clamp(9px,3cqh,23px);line-height:1.3;color:#4a2e59!important;text-wrap:balance;
+      }
+      .intro-qr-copy p { max-width:38em;margin:1.5cqh auto 0;color:#6c5572;font-size:clamp(8px,1.75cqh,13px);line-height:1.5; }
+      .intro-qr-card {
+        position:absolute;top:40%;left:0;right:0;
+        display:flex;flex-direction:column;align-items:center;gap:clamp(3px,.8cqh,8px);
+        color:#795b7d;
+      }
+      .intro-qr-card .intro-qr-button { width:clamp(135px,min(34cqh,56cqw),230px); }
+      .intro-qr-card .intro-qr-caption { font-size:clamp(9px,1.8cqh,14px); }
+      .intro-qr-card .intro-qr-note { font-size:clamp(8px,1.5cqh,12px); }
+      .intro-qr-back {
+        position:absolute;top:14%;left:50%;z-index:42;
+        width:clamp(104px,13vw,140px);padding:0;border:0;background:transparent;cursor:pointer;
+        transform:translate(-50%,-50%);
+        filter:drop-shadow(0 3px 7px rgba(92,61,134,.2));transition:filter .2s ease,transform .2s ease;
+      }
+      .intro-qr-back img { display:block;width:100%;height:auto;object-fit:contain; }
+      .intro-qr-back:hover { filter:brightness(1.06) drop-shadow(0 4px 8px rgba(92,61,134,.28));transform:translate(-50%,calc(-50% - 2px)); }
+      .intro-qr-back:active { transform:translate(-50%,-50%) scale(.97); }
+      .intro-qr-back:focus-visible { outline:3px solid #8063b4;outline-offset:3px;border-radius:12px; }
+      #introOpenBackButton {
+      position:absolute;top:14%;left:50%;z-index:42;
+      width:clamp(104px,13vw,140px);padding:0;border:0;background:transparent;cursor:pointer;
+      transform:translate(-50%,-50%);
+      filter:drop-shadow(0 3px 7px rgba(92,61,134,.2));transition:filter .2s ease,transform .2s ease;
+      }
+      #introOpenBackButton img { display:block;width:100%;height:auto;object-fit:contain; }
+      #introOpenBackButton:hover { filter:brightness(1.06) drop-shadow(0 4px 8px rgba(92,61,134,.28));transform:translate(-50%,calc(-50% - 2px)); }
+      #introOpenBackButton:active { transform:translate(-50%,-50%) scale(.97); }
+      #introOpenBackButton:focus-visible { outline:3px solid #8063b4;outline-offset:3px;border-radius:12px; }
+      .intro-qr-next {
+        position:absolute;bottom:12%;left:50%;width:min(65cqw,250px);
+        transform:translateX(-50%);
+      }
+      .intro-next-button.intro-qr-next:hover { transform:translateX(-50%) scale(1.04); }
+      .intro-next-button.intro-qr-next:active { transform:translateX(-50%) scale(.97); }
+      @media (max-height:650px) {
+        .intro-open-content { width:min(82vw,calc((100dvh - 96px) * .6667),430px); }
+        .intro-open-copy { top:19%; }
+        .intro-mode-hint { top:22%; }
+        .intro-mode-choices { top:35%;gap:0; }
+        .intro-mode-choice { width:min(62cqw,205px); }
+        .intro-qr-card { top:38%; }
+        .intro-qr-card .intro-qr-button { width:clamp(120px,min(31cqh,52cqw),190px); }
+      }
+      @media (max-width:640px) {
+        .intro-open-content { width:min(86vw,calc((100dvh - 128px) * .6667),400px); }
+        .intro-qr-back { width:clamp(100px,28vw,124px); }
+        #introOpenBackButton { width:clamp(100px,28vw,124px); }
+      }
+      @media (max-width:640px) and (max-height:700px) {
+        .intro-open-content { width:min(82vw,calc((100dvh - 108px) * .6667),360px); }
+        .intro-qr-card { top:36%; }
+        .intro-qr-card .intro-qr-button { width:clamp(112px,min(28cqh,48cqw),185px); }
+      }
       .intro-qr-slot { display:flex;flex-direction:column;align-items:center;gap:.7cqh;text-align:center;color:#795b7d; }
       .intro-qr-button {
         position:relative;display:grid;place-items:center;
@@ -194,41 +490,123 @@
       }
       .qr-modal-image-frame > img { position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none; }
       .qr-modal-image { border-radius:8px; }
+      .solo-qr-button { border:0;padding:0;background:transparent;cursor:zoom-in;filter:drop-shadow(0 4px 8px rgba(96,62,84,.2));transition:filter .2s ease,transform .2s ease; }
+      .solo-qr-button:hover { filter:brightness(1.05) drop-shadow(0 6px 10px rgba(96,62,84,.28));transform:scale(1.025); }
       .qr-modal-close:focus-visible,.intro-qr-button:focus-visible { outline:3px solid #8063b4;outline-offset:5px; }
       #gameMain.is-entry-screen {
         display:flex;align-items:stretch;justify-content:center;
         width:min(100%,860px)!important;height:calc(100dvh - 48px);
         max-height:calc(100dvh - 48px);overflow:hidden!important;
       }
+      #gameMain.teamwork-welcome-active {
+        position:relative;width:min(100%,1120px)!important;max-width:calc(100vw - 48px)!important;
+        padding:clamp(20px,3vw,38px)!important;border:1px solid rgba(193,151,79,.82)!important;
+        background:linear-gradient(145deg,rgba(255,252,246,.97),rgba(247,239,251,.97))!important;
+        box-shadow:0 22px 60px rgba(40,24,58,.23),inset 0 0 0 3px rgba(255,255,255,.72),inset 0 0 0 5px rgba(197,157,94,.15)!important;
+      }
+      #gameMain.teamwork-welcome-active::before,#gameMain.teamwork-welcome-active::after {
+        position:absolute;z-index:0;left:50%;width:clamp(90px,14vw,150px);height:16px;
+        color:#b78342;font-size:15px;line-height:16px;text-align:center;pointer-events:none;
+        content:"✦  ·  ✧  ·  ✦";transform:translateX(-50%);
+      }
+      #gameMain.teamwork-welcome-active::before { top:10px; }
+      #gameMain.teamwork-welcome-active::after { bottom:10px; }
+      #gameMain.teamwork-welcome-active #teamworkWelcomeScreen {
+        position:relative;isolation:isolate;display:flex;justify-content:center;gap:clamp(9px,1.8vh,17px)!important;
+        box-sizing:border-box;width:100%;height:100%;min-height:0;padding:clamp(8px,1.4vh,16px) 12px clamp(108px,17vh,158px)!important;
+      }
+      #gameMain.teamwork-welcome-active #teamworkWelcomeBackButton {
+        position:relative;top:auto;left:auto;z-index:3;
+        display:block;width:clamp(112px,13vw,160px);height:auto;max-height:none;aspect-ratio:1983 / 793;
+        margin:0;padding:0;border:0;border-radius:0;background:transparent!important;background-image:none!important;
+        box-shadow:none!important;line-height:0;filter:drop-shadow(0 3px 6px rgba(85,52,112,.18));
+        transition:filter .2s ease,transform .2s ease;
+      }
+      #gameMain.teamwork-welcome-active #teamworkWelcomeBackButton img {
+        display:block;width:100%;height:100%;min-width:0;min-height:0;max-width:100%;max-height:100%;object-fit:contain;
+      }
+      #gameMain.teamwork-welcome-active #teamworkWelcomeBackButton:hover { filter:brightness(1.07) drop-shadow(0 5px 8px rgba(85,52,112,.26));transform:translateY(-2px); }
+      #gameMain.teamwork-welcome-active #teamworkWelcomeBackButton:focus-visible { outline:3px solid #8063b4;outline-offset:4px;border-radius:12px; }
+      .teamwork-welcome-banner {
+        flex:none;width:min(78%,780px);height:auto;max-height:30dvh;object-fit:contain;
+        filter:drop-shadow(0 9px 20px rgba(72,45,91,.18));
+      }
+      .teamwork-welcome-badge {
+        display:inline-flex;flex:none;align-items:center;justify-content:center;gap:11px;max-width:100%;
+        padding:7px 18px;border:1px solid #d7bd8a;border-radius:999px;
+        background:linear-gradient(135deg,#fffdf7,#f7eedf);box-shadow:0 3px 9px rgba(118,85,45,.08);
+        color:#60447b;font-size:clamp(.78rem,1.7vh,.96rem);font-weight:800;
+      }
+      .teamwork-welcome-badge i { color:#ac7936;font-size:.85em; }
+      .teamwork-welcome-copy { flex:none;width:min(100%,760px); }
+      .teamwork-welcome-copy h1 {
+        margin:0;color:#38244f!important;font-family:'Chonburi','Kanit',serif!important;
+        font-size:clamp(2rem,5.3vh,3.5rem)!important;line-height:1.13!important;
+        text-shadow:0 2px 0 rgba(255,255,255,.88),0 5px 18px rgba(107,74,139,.12);
+      }
+      .teamwork-welcome-copy p {
+        max-width:58ch;margin:10px auto 0;color:#594968!important;font-size:clamp(.95rem,2vh,1.14rem)!important;
+        line-height:1.65!important;text-wrap:balance;
+      }
+      .teamwork-welcome-info { display:flex;flex:none;flex-wrap:wrap;justify-content:center;gap:10px; }
+      .teamwork-welcome-chip {
+        display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:40px;padding:8px 16px;
+        border:1px solid #d9c6e5;border-radius:999px;background:linear-gradient(135deg,#fff,#f5eef9);
+        box-shadow:0 3px 9px rgba(77,52,103,.06);color:#49345f;font-size:.9rem;font-weight:800;
+      }
+      .teamwork-welcome-chip i { color:#9165ad;font-size:1rem; }
+      .teamwork-welcome-next {
+        flex:none;width:min(38vw,320px)!important;max-height:12dvh!important;min-height:0;
+        background:transparent!important;border:0!important;box-shadow:none!important;
+      }
+      .teamwork-welcome-next img { display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(80,35,102,.2)); }
+      .teamwork-welcome-next:hover { filter:brightness(1.06) drop-shadow(0 5px 11px rgba(108,72,140,.2));transform:translateY(-2px) scale(1.02); }
+      .teamwork-welcome-next:focus-visible { outline:3px solid #8063b4;outline-offset:2px;border-radius:24px; }
+      .teamwork-welcome-guidance {
+        flex:none;align-self:flex-end;max-width:min(calc(100% - 250px),700px);margin:0 0 0 clamp(190px,22vw,250px)!important;padding:7px 16px;border-top:1px solid rgba(183,131,66,.38);
+        color:#645575!important;font-size:clamp(.76rem,1.55vh,.92rem)!important;font-weight:600;line-height:1.5;text-wrap:balance;
+      }
+      .teamwork-welcome-mascot {
+        position:absolute;left:clamp(12px,2.2vw,28px);bottom:clamp(12px,2vh,24px);z-index:2;
+        width:clamp(150px,21vw,250px);pointer-events:none;
+      }
+      .teamwork-welcome-mascot img {
+        display:block;width:100%;height:auto;object-fit:contain;
+        filter:drop-shadow(0 9px 13px rgba(60,37,79,.19));animation:teamwork-mascot-float 4.5s ease-in-out infinite;
+      }
+      @keyframes teamwork-mascot-float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-5px); } }
       #gameMain.is-entry-screen.hidden { display:none!important; }
-      #gameMain.is-entry-screen #welcomeScreen,#gameMain.is-entry-screen #startScreen {
+      #gameMain.is-entry-screen #welcomeScreen,#gameMain.is-entry-screen #startScreen,#gameMain.is-entry-screen #teamworkWelcomeScreen {
         box-sizing:border-box;width:100%;height:100%;max-height:100%;
         justify-content:space-evenly;gap:clamp(3px,1.2dvh,10px)!important;
         padding:0!important;
       }
-      #gameMain.is-entry-screen #welcomeScreen > *,#gameMain.is-entry-screen #startScreen > * { margin-top:0!important; }
-      #gameMain.is-entry-screen #welcomeScreenBackButton,#gameMain.is-entry-screen #nameScreenBackButton {
+      #gameMain.is-entry-screen #welcomeScreen > *,#gameMain.is-entry-screen #startScreen > *,#gameMain.is-entry-screen #teamworkWelcomeScreen > * { margin-top:0!important; }
+      #gameMain.is-entry-screen #welcomeScreenBackButton,#gameMain.is-entry-screen #nameScreenBackButton,#gameMain.is-entry-screen #teamworkWelcomeBackButton {
         flex:none;width:clamp(108px,13vw,170px);max-height:7dvh;aspect-ratio:1983 / 793;
+      }
+      #gameMain.is-entry-screen #startScreen #nameScreenBackButton {
+        width:clamp(132px,15vw,200px);max-height:9dvh;
       }
       #gameMain.is-entry-screen .welcome-banner {
         flex:none;width:min(92%,760px);height:auto;max-height:26dvh;
       }
-      #gameMain.is-entry-screen #welcomeScreen > .inline-flex {
+      #gameMain.is-entry-screen #welcomeScreen > .inline-flex,#gameMain.is-entry-screen #teamworkWelcomeScreen > .inline-flex {
         flex:none;padding:clamp(5px,1dvh,10px) clamp(12px,2.4vw,20px);
         font-size:clamp(.78rem,1.8dvh,1rem);
       }
-      #gameMain.is-entry-screen #welcomeScreen > div.space-y-3 { flex:none; }
-      #gameMain.is-entry-screen #welcomeScreen h1 {
+      #gameMain.is-entry-screen #welcomeScreen > div.space-y-3,#gameMain.is-entry-screen #teamworkWelcomeScreen > div.space-y-3 { flex:none; }
+      #gameMain.is-entry-screen #welcomeScreen h1,#gameMain.is-entry-screen #teamworkWelcomeScreen h1 {
         font-size:clamp(1.25rem,4.8dvh,3rem)!important;line-height:1.12!important;
       }
-      #gameMain.is-entry-screen #welcomeScreen p {
+      #gameMain.is-entry-screen #welcomeScreen p,#gameMain.is-entry-screen #teamworkWelcomeScreen p {
         max-width:64ch;font-size:clamp(.82rem,2dvh,1.18rem)!important;line-height:1.4!important;
       }
-      #gameMain.is-entry-screen #welcomeScreen > .flex.items-center {
+      #gameMain.is-entry-screen #welcomeScreen > .flex.items-center,#gameMain.is-entry-screen #teamworkWelcomeScreen > .flex.items-center {
         flex:none;font-size:clamp(.75rem,1.9dvh,1rem);
       }
       #gameMain.is-entry-screen .start-game-art { flex:none;width:min(42vw,310px);max-height:13dvh; }
-      #gameMain.is-entry-screen #welcomeScreen > span:last-child {
+      #gameMain.is-entry-screen #welcomeScreen > span:last-child,#gameMain.is-entry-screen #teamworkWelcomeScreen > span:last-child {
         flex:none;font-size:clamp(.7rem,1.6dvh,.95rem);
       }
       #gameMain.is-entry-screen #startScreen .fairytale-logo {
@@ -290,6 +668,285 @@
       }
       .welcome-logo { width:min(100%,680px); max-height:250px; object-fit:contain; filter:drop-shadow(0 12px 24px rgba(88,61,119,.2)); }
       .welcome-panel { background:transparent!important; }
+      #teamworkWelcomeScreen,#knowledgeReviewScreen,#teamworkSummaryScreen {
+        color:#49355f;
+      }
+      .game-panel {
+        color:#49355f;background:linear-gradient(180deg,rgba(255,251,247,.96),rgba(244,237,251,.96));
+        border:1px solid rgba(183,131,66,.4);border-radius:22px;padding:clamp(16px,3vw,28px);
+        box-shadow:inset 0 0 0 2px rgba(255,255,255,.72);
+      }
+      .game-panel h2,.game-panel h3 { color:#49355f; }
+      .game-panel p,.game-panel li { color:#5f526b; }
+      .game-panel button:not(.mode-choice) { min-height:44px; }
+      .game-panel input,.game-panel select {
+        color:#39294b;background:#fff;border:1px solid #c8b7d6;border-radius:10px;padding:10px 12px;
+      }
+      .mode-screen-actions { display:flex;justify-content:center;flex-wrap:wrap;gap:12px; }
+      .game-action { border:1px solid #b99bce;border-radius:12px;padding:11px 18px;background:#f2eafa;color:#503578;font-weight:700; }
+      .game-action:hover { background:#e8daf5; }
+      .team-result-row { border:1px solid #ddcce8;border-radius:12px;background:rgba(255,255,255,.72);padding:12px; }
+      #gameMain.review-active { width:min(100%,1240px)!important;max-width:calc(100vw - 40px)!important; }
+      #knowledgeReviewScreen { width:100%;padding:clamp(14px,2.4vw,26px);gap:18px!important; }
+      .review-header { display:flex;align-items:center;justify-content:flex-start;gap:16px;padding:4px 4px 14px;border-bottom:1px solid #e8d7b6; }
+      .review-header-copy { min-width:0; }
+      .review-header h1 { margin:0;color:#432c63!important;font-family:'Chonburi','Kanit',serif!important;font-size:clamp(1.5rem,3vw,2.25rem)!important;line-height:1.25; }
+      .review-header p { margin:7px 0 0;color:#675778!important;font-size:clamp(.82rem,1.3vw,.98rem); }
+      .review-header-art { order:-1;flex:none;width:clamp(90px,13vw,145px);height:clamp(84px,11vw,128px);object-fit:contain;object-position:center bottom;filter:drop-shadow(0 5px 9px rgba(74,42,99,.14)); }
+      .review-board-layout { display:grid;grid-template-columns:minmax(235px,285px) minmax(0,1fr);align-items:stretch;gap:16px; }
+      .review-sidebar { display:flex;flex-direction:column;gap:12px;min-width:0;padding:14px;border:1px solid #d9ba7f;border-radius:20px;background:linear-gradient(180deg,rgba(255,252,246,.97),rgba(249,243,252,.97));box-shadow:0 7px 18px rgba(72,48,99,.06),inset 0 0 0 2px rgba(255,255,255,.78); }
+      .review-sidebar-heading { display:flex;align-items:center;justify-content:space-between;gap:8px;color:#503875;font-weight:800;font-size:.9rem; }
+      .review-sidebar-heading span:last-child { color:#806b8e;font-size:.72rem;font-weight:700; }
+      .review-question-list { display:grid;gap:6px;max-height:min(52vh,560px);overflow-y:auto;padding:2px 3px 2px 0; }
+      .review-question-item { display:grid;grid-template-columns:30px minmax(0,1fr) 22px;align-items:center;gap:8px;min-width:0;min-height:42px;padding:5px 8px;border:1px solid #e7ddea;border-radius:12px;background:rgba(255,255,255,.8);color:#503875;text-align:left;cursor:pointer;transition:background .16s ease,border-color .16s ease,transform .16s ease; }
+      .review-question-item:hover { border-color:#c4a1d4;background:#f8f0fc;transform:translateX(2px); }
+      .review-question-item[aria-current="true"] { border-color:#9c70b8;background:linear-gradient(100deg,#f0e5f7,#fff9ee);box-shadow:0 0 0 2px rgba(156,112,184,.16); }
+      .review-question-number { display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#fff0d9;color:#79552c;font-size:.75rem;font-weight:800; }
+      .review-question-item[aria-current="true"] .review-question-number { background:#805db0;color:#fff; }
+      .review-question-term { min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.72rem;font-weight:700; }
+      .review-question-status { display:grid;place-items:center;font-size:17px; }
+      .review-question-status.is-correct { color:#239568; }
+      .review-question-status.is-wrong { color:#d44b5b; }
+      .review-question-status.is-unanswered { color:#92869e; }
+      .review-sidebar-empty { margin:4px 0;color:#746681;font-size:.8rem;text-align:center; }
+      .review-filter-block { display:grid;gap:7px;border-top:1px solid #e7d6b3;padding-top:11px; }
+      .review-filter-label { color:#755d3c;font-size:.74rem;font-weight:800; }
+      .review-filters { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px; }
+      .review-filter-button { min-width:0;padding:7px 8px;border:1px solid #e2d8e8;border-radius:10px;background:#fff;color:#57466b;font-size:.7rem;font-weight:700;cursor:pointer; }
+      .review-filter-button:hover { background:#f6effa; }
+      .review-filter-button[aria-pressed="true"] { border-color:#9a73b7;background:#f0e7f7;color:#563576;box-shadow:inset 0 0 0 1px rgba(154,115,183,.14); }
+      .review-filter-button .filter-count { color:#806b8e;font-variant-numeric:tabular-nums; }
+      .review-main { display:flex;flex-direction:column;gap:12px;min-width:0;padding:clamp(14px,2vw,22px);border:1px solid #e4d1aa;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(255,250,241,.97));box-shadow:0 8px 22px rgba(72,48,99,.06),inset 0 0 0 2px rgba(255,255,255,.72); }
+      .review-question-toolbar { display:grid;grid-template-columns:auto minmax(80px,1fr) auto auto auto;align-items:center;gap:10px; }
+      .review-question-toolbar h2 { margin:0;color:#503875;font-size:clamp(.95rem,1.5vw,1.15rem);font-weight:800;text-align:center; }
+      .review-step-button { display:grid;place-items:center;width:40px;height:40px;border:1px solid #d7bb8d;border-radius:12px;background:#fffaf1;color:#65448b;cursor:pointer; }
+      .review-step-button:hover:not(:disabled) { background:#f2e9f8;border-color:#b99aca; }
+      .review-step-button:disabled { opacity:.45;cursor:not-allowed; }
+      .review-status-badge { display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:5px 11px;border:1px solid;border-radius:10px;font-size:.72rem;font-weight:800;white-space:nowrap; }
+      .review-status-badge.is-correct { border-color:#a9ddbf;background:#e9f7ef;color:#237a53; }
+      .review-status-badge.is-wrong { border-color:#efb4bd;background:#fff0f1;color:#b43f55; }
+      .review-status-badge.is-unanswered { border-color:#d9d1df;background:#f3f0f5;color:#756b7d; }
+      .review-answer-time { display:flex;align-items:center;gap:7px;color:#746681;font-size:.68rem;white-space:nowrap; }
+      .review-answer-time i { color:#b78342; }
+      .review-term-heading { display:flex;align-items:center;gap:9px;margin:2px 0 0;color:#4e3472;font-size:clamp(1.05rem,1.8vw,1.35rem);font-weight:800; }
+      .review-question-prompt,.review-hint-card,.review-options-card,.review-correct-card,.review-explanation-card { padding:12px 14px;border:1px solid #e4d8ec;border-radius:14px;background:linear-gradient(145deg,#fcf8ff,#f6effa); }
+      .review-question-prompt .review-card-label,.review-hint-card .review-card-label,.review-options-card .review-card-label,.review-correct-card .review-card-label,.review-explanation-card .review-card-label { display:flex;align-items:center;gap:7px;margin-bottom:6px;color:#684793;font-size:.8rem;font-weight:800; }
+      .review-question-prompt p,.review-hint-card p,.review-correct-card p,.review-explanation-card p { margin:0;color:#493b5a;font-size:.88rem;line-height:1.65; }
+      .review-hint-card { border-color:#ead9b7;background:linear-gradient(145deg,#fffaf0,#fff6e8); }
+      .review-hint-card .review-card-label { color:#855d2c; }
+      .review-options-card { padding:10px 12px;background:#fffdfa; }
+      .review-option-list { display:grid;gap:6px; }
+      .review-option-row { display:grid;grid-template-columns:26px minmax(0,1fr) 22px;align-items:center;gap:8px;min-height:39px;padding:6px 8px;border:1px solid #e6dfea;border-radius:11px;background:#fff;color:#4b3d5e; }
+      .review-option-row.is-correct { border-color:#a9ddbf;background:#edf8f1;color:#246c4c; }
+      .review-option-row.is-selected-wrong { border-color:#efb4bd;background:#fff0f1;color:#ac3e51; }
+      .review-option-letter { display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:#aaa1b1;color:#fff;font-size:.7rem;font-weight:800; }
+      .review-option-row.is-correct .review-option-letter { background:#239568; }
+      .review-option-row.is-selected-wrong .review-option-letter { background:#d94f5e; }
+      .review-option-text { min-width:0;font-size:.78rem;line-height:1.4;overflow-wrap:anywhere; }
+      .review-option-icon { text-align:center;font-size:16px; }
+      .review-option-row.is-correct .review-option-icon { color:#239568; }
+      .review-option-row.is-selected-wrong .review-option-icon { color:#d94f5e; }
+      .review-correct-card { border-color:#b8dfc9;background:linear-gradient(145deg,#f1fbf5,#eaf7ef); }
+      .review-correct-card .review-card-label { color:#238257; }
+      .review-correct-card p { display:flex;align-items:flex-start;gap:8px;color:#246c4c;font-weight:700; }
+      .review-correct-card p i { flex:none;margin-top:4px;color:#239568; }
+      .review-explanation-card { border-color:#dfd0ed;background:linear-gradient(145deg,#f8f2fd,#f1eafa); }
+      .review-empty-state { display:grid;place-items:center;min-height:300px;padding:24px;border:1px dashed #d4c4df;border-radius:16px;color:#6f607d;text-align:center; }
+      .review-empty-state i { margin-bottom:8px;color:#9b7db2;font-size:1.7rem; }
+      .review-main-footer { display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:2px; }
+      .review-main-footer .game-action { min-height:44px; }
+      .review-main-footer .review-report-button { border-color:#a77a45;background:linear-gradient(120deg,#7752a1,#936ab1)!important;color:#fff!important;box-shadow:0 3px 0 rgba(92,61,123,.18); }
+      .review-main-footer .review-report-button:hover { background:#68468f!important; }
+      #teamworkReviewContent { width:100%; }
+      #teamworkReviewContent .review-header { margin-bottom:14px; }
+      #teamworkReviewContent { color:#463653; }
+      .teamwork-review-header { display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px; }
+      .teamwork-review-back,.teamwork-review-finish {
+        display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:10px 18px;
+        border:1px solid #d9b16c;border-radius:13px;font-weight:800;white-space:nowrap;cursor:pointer;
+        transition:transform .16s ease,filter .16s ease,box-shadow .16s ease;
+      }
+      .teamwork-review-back { background:#f0e7fa;color:#503875; }
+      .teamwork-review-finish { border-color:#d9b16c;background:linear-gradient(130deg,#38205f,#7044b5);color:#fff9f0;box-shadow:0 3px 0 rgba(56,32,95,.18); }
+      .teamwork-review-back:hover,.teamwork-review-finish:hover { transform:translateY(-1px);filter:brightness(1.04); }
+      .teamwork-review-back:focus-visible,.teamwork-review-finish:focus-visible,.teamwork-review-filter:focus-visible,
+      .teamwork-review-category:focus-visible,.teamwork-review-card:focus-visible,.teamwork-review-modal button:focus-visible {
+        outline:3px solid #b78b4d;outline-offset:3px;
+      }
+      .teamwork-review-header .review-header-copy { text-align:center; }
+      .teamwork-review-header h1 { color:#38205f!important; }
+      .teamwork-review-mode {
+        display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:5px 11px;border:1px solid #d9b16c;
+        border-radius:999px;background:#fff7e9;color:#67451f;font-size:.82rem;font-weight:800;
+      }
+      .teamwork-review-stats { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px; }
+      .teamwork-review-stat {
+        display:flex;align-items:center;gap:12px;min-width:0;padding:14px 16px;border:1px solid #e3d3b7;
+        border-radius:16px;background:linear-gradient(140deg,#fffdf8,#f7f0fb);
+      }
+      .teamwork-review-stat i { display:grid;place-items:center;flex:none;width:38px;height:38px;border-radius:50%;background:#f0e7fa;color:#7044b5; }
+      .teamwork-review-stat.is-correct i { background:#e8f5ed;color:#278653; }
+      .teamwork-review-stat.is-wrong i { background:#fff0f1;color:#c94758; }
+      .teamwork-review-stat strong,.teamwork-review-stat span { display:block; }
+      .teamwork-review-stat strong { color:#38205f;font-size:1.2rem;font-variant-numeric:tabular-nums; }
+      .teamwork-review-stat span { color:#756781;font-size:.78rem;font-weight:700; }
+      .teamwork-review-toolbar { display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 14px;border:1px solid #e7d9bd;border-radius:16px;background:#fffdf8; }
+      .teamwork-review-filters { display:flex;flex-wrap:wrap;gap:7px; }
+      .teamwork-review-filter {
+        min-height:40px;padding:8px 12px;border:1px solid #e0d5e8;border-radius:11px;background:#fff;color:#51425f;
+        font-weight:800;cursor:pointer;
+      }
+      .teamwork-review-filter:hover { background:#f6f0fb; }
+      .teamwork-review-filter[aria-pressed="true"] { border-color:#8e6bb1;background:#f0e7fa;color:#38205f;box-shadow:inset 0 0 0 1px rgba(112,68,181,.12); }
+      .teamwork-review-filter-count { margin-left:4px;color:#756781;font-variant-numeric:tabular-nums; }
+      .teamwork-review-category-wrap { display:flex;align-items:center;gap:8px;color:#59496a;font-size:.86rem;font-weight:800;white-space:nowrap; }
+      .teamwork-review-category { min-height:42px;max-width:min(36vw,280px);padding:8px 34px 8px 11px;border:1px solid #d9c9e2;border-radius:11px;background:#fff;color:#463653; }
+      .teamwork-review-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px; }
+      .teamwork-review-card {
+        display:flex;flex-direction:column;align-items:stretch;min-width:0;min-height:230px;padding:16px;text-align:left;
+        border:1px solid #dfd2e8;border-radius:17px;background:linear-gradient(150deg,#fffefa,#f7f0fb);
+        color:#463653;box-shadow:0 4px 12px rgba(56,32,95,.055);cursor:pointer;
+        transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
+      }
+      .teamwork-review-card:hover { transform:translateY(-2px);border-color:#c7a873;box-shadow:0 9px 20px rgba(56,32,95,.1); }
+      .teamwork-review-card.is-correct { border-top:3px solid #278653; }
+      .teamwork-review-card.is-wrong { border-top:3px solid #c94758; }
+      .teamwork-review-card.is-unanswered { border-top:3px solid #a69aad; }
+      .teamwork-review-card-top { display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px; }
+      .teamwork-review-number { color:#756781;font-size:.82rem;font-weight:800; }
+      .teamwork-review-status { display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid;border-radius:999px;font-size:.74rem;font-weight:800; }
+      .teamwork-review-status.is-correct { border-color:#b7dfc6;background:#e8f5ed;color:#206d43; }
+      .teamwork-review-status.is-wrong { border-color:#efb9c0;background:#fff0f1;color:#a93648; }
+      .teamwork-review-status.is-unanswered { border-color:#ded7e3;background:#f4f1f6;color:#62576b; }
+      .teamwork-review-card-title { margin:0 0 8px;color:#38205f;font-size:1.08rem;font-weight:800;line-height:1.4; }
+      .teamwork-review-category-label { color:#765c3c;font-size:.77rem;font-weight:800; }
+      .teamwork-review-excerpt { display:-webkit-box;flex:1;margin:12px 0;overflow:hidden;color:#5b5064;font-size:.9rem;line-height:1.6;-webkit-box-orient:vertical;-webkit-line-clamp:3; }
+      .teamwork-review-card-action { display:flex;align-items:center;gap:7px;margin-top:auto;color:#7044b5;font-size:.86rem;font-weight:800; }
+      .teamwork-review-empty { grid-column:1/-1;padding:34px;border:1px dashed #d4c7df;border-radius:15px;color:#62576b;text-align:center;background:#fffdf8; }
+      .teamwork-review-footer { display:flex;justify-content:flex-end;padding-top:2px; }
+      .teamwork-review-overlay {
+        position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;
+        background:rgba(31,21,43,.58);backdrop-filter:blur(3px);
+      }
+      .teamwork-review-overlay[hidden] { display:none!important; }
+      .teamwork-review-modal {
+        display:flex;flex-direction:column;width:min(760px,calc(100vw - 32px));max-height:85dvh;
+        overflow:hidden;border:1px solid #d9b16c;border-radius:22px;background:#fff9f0;
+        box-shadow:0 22px 70px rgba(20,12,31,.3),inset 0 0 0 3px rgba(255,255,255,.78);
+      }
+      .teamwork-review-modal-header { display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:20px 22px 16px;border-bottom:1px solid #e5d4b2; }
+      .teamwork-review-modal-heading { min-width:0; }
+      .teamwork-review-modal-heading h2 { margin:0;color:#38205f;font-size:clamp(1.18rem,2.3vw,1.55rem);line-height:1.35; }
+      .teamwork-review-modal-heading p { margin:6px 0 0;color:#756781;font-size:.88rem; }
+      .teamwork-review-modal-close { display:grid;place-items:center;flex:none;width:42px;height:42px;border:1px solid #dbc99f;border-radius:12px;background:#fff;color:#49345f;font-size:1.6rem;line-height:1;cursor:pointer; }
+      .teamwork-review-modal-close:hover { background:#f4e9fa; }
+      .teamwork-review-modal-body { display:grid;gap:13px;overflow:auto;padding:18px 22px 22px;overscroll-behavior:contain; }
+      .teamwork-review-detail { padding:14px 16px;border:1px solid #e2d4ea;border-radius:14px;background:#f0e7fa; }
+      .teamwork-review-detail h3 { display:flex;align-items:center;gap:8px;margin:0 0 8px;color:#503875;font-size:.92rem;font-weight:800; }
+      .teamwork-review-detail p { margin:0;color:#463653;font-size:1rem;line-height:1.75;overflow-wrap:anywhere;white-space:pre-wrap; }
+      .teamwork-review-detail.is-correct { border-color:#b7dfc6;background:#eaf6ee; }
+      .teamwork-review-detail.is-correct h3,.teamwork-review-detail.is-correct p { color:#205f3e; }
+      .teamwork-review-detail.is-selected { border-color:#dfd2e8;background:#fff; }
+      .teamwork-review-detail.is-explanation { border-color:#e1d2b5;background:#fffdf8; }
+      .teamwork-review-detail.is-explanation h3 { color:#765c3c; }
+      .teamwork-review-detail.is-unavailable { border-color:#e3dce8;background:#f6f3f8; }
+      .teamwork-review-modal-nav { display:flex;justify-content:space-between;gap:10px;padding:12px 20px;border-top:1px solid #eadfcd;background:#fffdf8; }
+      .teamwork-review-modal-nav button { min-height:42px;padding:8px 14px;border:1px solid #d7c5e2;border-radius:11px;background:#f4ecfa;color:#503875;font-weight:800;cursor:pointer; }
+      .teamwork-review-modal-nav button:disabled { opacity:.48;cursor:not-allowed; }
+      .teamwork-review-modal-nav button:hover:not(:disabled) { background:#ece0f5; }
+      @media(max-width:900px) {
+        .teamwork-review-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+        .teamwork-review-header { grid-template-columns:auto minmax(0,1fr); }
+        .teamwork-review-header .review-header-copy { text-align:left; }
+        .teamwork-review-header > span[aria-hidden="true"] { display:none; }
+      }
+      @media(max-width:620px) {
+        .teamwork-review-header { grid-template-columns:1fr;justify-items:stretch;gap:10px; }
+        .teamwork-review-header .review-header-copy { text-align:left; }
+        .teamwork-review-back { justify-self:start; }
+        .teamwork-review-stats { gap:7px; }
+        .teamwork-review-stat { flex-direction:column;align-items:flex-start;gap:6px;padding:10px; }
+        .teamwork-review-stat i { width:32px;height:32px; }
+        .teamwork-review-toolbar { align-items:stretch;flex-direction:column; }
+        .teamwork-review-filters { flex-wrap:nowrap;overflow-x:auto;padding:2px 2px 6px; }
+        .teamwork-review-filter { flex:none; }
+        .teamwork-review-category-wrap { justify-content:space-between; }
+        .teamwork-review-category { max-width:68%; }
+        .teamwork-review-grid { grid-template-columns:minmax(0,1fr);gap:10px; }
+        .teamwork-review-card { min-height:190px; }
+        .teamwork-review-modal { width:calc(100vw - 20px);max-height:90dvh;border-radius:17px; }
+        .teamwork-review-modal-header { padding:14px 14px 12px; }
+        .teamwork-review-modal-body { gap:10px;padding:12px 14px 16px; }
+        .teamwork-review-detail { padding:12px; }
+        .teamwork-review-detail p { font-size:.96rem; }
+        .teamwork-review-modal-nav { padding:10px 12px; }
+      }
+      @media(max-width:800px) {
+        #gameMain.review-active { max-width:calc(100vw - 24px)!important; }
+        .review-board-layout { grid-template-columns:1fr; }
+        .review-question-list { display:grid;grid-auto-flow:column;grid-auto-columns:minmax(145px,1fr);grid-template-rows:repeat(2,auto);max-height:none;overflow-x:auto;overflow-y:hidden;padding:2px 2px 7px; }
+        .review-question-item { grid-template-columns:28px minmax(0,1fr) 20px; }
+        .review-question-item:hover { transform:translateY(-1px); }
+        .review-filter-block { border-top:0;padding-top:2px; }
+        .review-filters { display:flex;overflow-x:auto;padding:1px 1px 5px; }
+        .review-filter-button { flex:none; }
+        .review-question-toolbar { grid-template-columns:38px minmax(70px,1fr) auto;gap:7px; }
+        .review-question-toolbar h2 { grid-column:2;grid-row:1; }
+        .review-question-toolbar #reviewNextButton { grid-column:3;grid-row:1; }
+        .review-status-badge { grid-column:1 / 3;justify-self:start; }
+        .review-answer-time { grid-column:3;justify-self:end; }
+      }
+      @media(max-width:520px) {
+        #gameMain.review-active { max-width:calc(100vw - 16px)!important; }
+        #knowledgeReviewScreen { padding:12px;gap:12px!important; }
+        .review-header { gap:8px;padding:0 0 10px; }
+        .review-header-art { width:68px;height:66px; }
+        .review-header h1 { font-size:1.28rem!important; }
+        .review-header p { margin-top:4px;font-size:.75rem; }
+        .review-board-layout { gap:10px; }
+        .review-sidebar { gap:8px;padding:10px;border-radius:16px; }
+        .review-question-list { grid-auto-columns:minmax(130px,70%);grid-template-rows:repeat(2,auto); }
+        .review-question-item { min-height:38px;padding:4px 6px; }
+        .review-question-term { font-size:.67rem; }
+        .review-main { gap:9px;padding:12px;border-radius:17px; }
+        .review-question-toolbar { grid-template-columns:34px minmax(50px,1fr) 34px; }
+        .review-step-button { width:34px;height:36px; }
+        .review-question-toolbar h2 { font-size:.9rem; }
+        .review-status-badge { grid-column:1 / 2;font-size:.66rem;padding:4px 7px; }
+        .review-answer-time { grid-column:2 / 4;font-size:.65rem; }
+        .review-term-heading { font-size:1rem; }
+        .review-question-prompt,.review-hint-card,.review-options-card,.review-correct-card,.review-explanation-card { padding:10px; }
+        .review-question-prompt p,.review-hint-card p,.review-correct-card p,.review-explanation-card p { font-size:.8rem; }
+        .review-option-row { grid-template-columns:24px minmax(0,1fr) 18px;gap:6px;padding:5px; }
+        .review-option-text { font-size:.73rem; }
+        .review-main-footer { display:grid;grid-template-columns:1fr 1fr; }
+        .review-main-footer .review-report-button { grid-column:1 / -1;grid-row:1; }
+        .review-main-footer .game-action { padding:10px 8px; }
+      }
+      .quiz-runtime-controls { display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap; }
+      .quiz-runtime-controls button { min-height:42px;padding:8px 14px;border-radius:10px;border:1px solid #c8b7d6;background:#fff;color:#503578;font-weight:700; }
+      #quizScreen > .flex:first-child { padding:8px 0 14px;border-color:#e3d2e9!important; }
+      #quizScreen #questionNum { color:#67448e!important;background:linear-gradient(135deg,#f1e7fa,#fff8ea)!important;border:1px solid #d8c2e5!important; }
+      #quizScreen #playerDisplay { color:#806b8e!important; }
+      #quizProgressTrack { height:9px;margin:-7px 0 2px;overflow:hidden;border:1px solid #e7d7ed;border-radius:999px;background:#f4edf7; }
+      #quizProgressFill { width:10%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#805ab0,#bd91d1 62%,#e7c47d);box-shadow:0 0 9px rgba(142,104,181,.22);transition:width .4s ease; }
+      .quiz-prompt-card { padding:clamp(17px,2.8vw,28px);border:1px solid #e3d2e9;border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(248,240,252,.96));box-shadow:0 8px 22px rgba(72,48,99,.055),inset 0 0 0 2px rgba(255,255,255,.7); }
+      #quizScreen #questionText { margin:0;color:#49355f!important;font-family:'Chonburi','Kanit',serif;font-size:clamp(1.2rem,2.7vw,1.8rem)!important;line-height:1.45!important; }
+      #quizScreen .quiz-hint-card { padding:15px 18px!important;border:1px solid #ead6a9!important;border-radius:17px!important;background:linear-gradient(135deg,#fffaf0,#fff4df)!important;box-shadow:0 4px 12px rgba(143,107,53,.06); }
+      #quizScreen .option-btn { position:relative;overflow:hidden;min-height:82px!important;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease!important; }
+      #quizScreen .option-btn:not(:disabled):hover { transform:translateY(-2px);box-shadow:0 7px 15px rgba(83,58,110,.11)!important; }
+      #quizScreen .option-btn:disabled { cursor:default; }
+      #quizScreen #timerContainer { min-width:94px;justify-content:center;background:linear-gradient(145deg,#fff8e8,#fff1d3)!important;border:1px solid #e8c98f!important;box-shadow:0 3px 9px rgba(143,107,53,.08); }
+      #quizScreen #timerText { color:#855526!important; }
+      #quizScreen #keyboardHelpText { color:#806b8e!important; }
+      .teamwork-only { display:none; }
+      #gameMain.teamwork-active .teamwork-only { display:block; }
+      .teamwork-only.hidden,.mode-screen-actions.hidden { display:none!important; }
+      #gameMain.teamwork-active #streakBadge { display:none!important; }
+      #reviewKnowledgeList,.scroll-panel { max-height:60vh;overflow:auto; }
+      @media (max-width:640px) {
+        #reviewKnowledgeList,.scroll-panel { max-height:none; }
+      }
       .welcome-banner { width:min(100%,680px);height:auto;max-height:250px;object-fit:contain;filter:drop-shadow(0 12px 24px rgba(88,61,119,.2)); }
       .start-game-art,.name-start-art {
         position:relative;display:block;aspect-ratio:1983 / 793;margin-inline:auto;
@@ -373,7 +1030,7 @@
       #quizScreen .border-slate-800,#resultScreen .border-slate-800 { border-color:#eadfef!important; }
       #quizScreen #questionText,#resultScreen h2,#resultScreen h3 { color:#30234f!important; }
       #quizScreen .bg-slate-800\/60,#quizScreen .bg-slate-800\/80,#resultScreen .bg-slate-800\/70,#resultScreen .bg-slate-800\/50 { background:rgba(248,242,252,.92)!important; border-color:#e6d9ef!important; }
-      #quizScreen #hintText { color:#403451!important;font-size:clamp(15px,2vw,17px)!important;font-weight:500;line-height:1.75!important; }
+      #quizScreen #hintText { color:#403451!important;font-size:clamp(17px,2.2vw,20px)!important;font-weight:500;line-height:1.7!important; }
       #quizScreen .hint-heading { color:#80521c!important;font-size:14px!important;letter-spacing:.02em; }
       .quiz-explanation-card { margin-top:12px;padding:14px 16px;border:1px solid #e8cf9b;border-radius:14px;background:#fffaf0;color:#403451;font-size:15px;line-height:1.75; }
       .quiz-explanation-label { display:flex;align-items:center;gap:7px;margin-bottom:5px;color:#80521c;font-size:14px;font-weight:700; }
@@ -383,7 +1040,72 @@
       #resultScreen #reviewToggleButton { color:#4b3470!important;background:#f1eaff!important;background-image:none!important;border-color:#c8afe6!important; }
       #resultScreen #reviewToggleButton:hover { background:#e7dcfa!important;background-image:none!important; }
       #resultScreen #reviewToggleButton > i,#resultScreen #reviewToggleText { color:#4b3470!important; }
-      #quizScreen .option-btn { color:#352747!important; font-weight:600!important; border-width:1.5px!important; border-radius:17px!important; box-shadow:0 4px 0 rgba(71,50,99,.08)!important; }
+      #resultScreen { padding:clamp(16px,3vw,30px);border:1px solid rgba(204,166,112,.58);border-radius:24px;background:linear-gradient(180deg,rgba(249,243,255,.96),rgba(255,250,243,.98));box-shadow:inset 0 0 0 2px rgba(255,255,255,.75); }
+      #resultScreen .result-trophy-art { display:grid;place-items:center;width:clamp(92px,13vw,124px);height:clamp(92px,13vw,124px);margin:0 auto; }
+      #resultScreen .result-trophy-art img { display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 7px 10px rgba(93,56,125,.2)); }
+      #resultScreen > .text-center h2 { color:#49355f!important;font-family:'Chonburi','Kanit',serif!important;font-size:clamp(1.5rem,3.6vw,2.2rem)!important; }
+      #resultScreen > .text-center p { color:#806b8e!important; }
+      #soloResultMeta { background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(245,236,252,.92))!important;border:1px solid rgba(183,131,66,.42)!important;border-radius:18px!important;color:#5f526b!important; }
+      #resultScreen > .bg-slate-800\\/70 { background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(246,239,252,.95))!important;border:1px solid #e2d3ec!important;border-radius:20px!important;box-shadow:0 8px 24px rgba(72,48,99,.06); }
+      #resultScreen .bg-slate-900 { background:linear-gradient(90deg,#eadff4,#f2e8f6)!important;border:1px solid #ded0e9!important; }
+      #accuracyProgressBar { min-width:0;background:linear-gradient(90deg,#8f6bb8,#c09bd1 58%,#e3c284)!important;box-shadow:0 0 12px rgba(143,107,184,.25); }
+      #accuracyPercentText { color:#70509b!important; }
+      #accuracyFeedback { color:#806b8e!important; }
+      #resultScreen .grid-cols-3 > div { background:linear-gradient(160deg,rgba(255,255,255,.9),rgba(246,238,252,.96))!important;border:1px solid #e2d3ec!important;border-radius:16px!important;box-shadow:0 5px 15px rgba(72,48,99,.05); }
+      #resultScreen .grid-cols-3 > div > div:first-child { color:#806b8e!important; }
+      #resultScreen #scoreStat { color:#b78342!important; }
+      #resultScreen #correctStat { color:#398d70!important; }
+      #resultScreen #wrongStat { color:#c65f78!important; }
+      #resultScreen .game-action { min-height:48px;padding:12px 20px;background:linear-gradient(135deg,#f3e9fb,#eadcf5)!important;background-image:none!important;color:#5b3c7e!important;border:1px solid #c8afe0!important;border-radius:14px!important;box-shadow:0 4px 0 rgba(108,77,143,.14);font-weight:700; }
+      #resultScreen .game-action:hover { background:#e8daf5!important; }
+      #resultScreen { width:min(100%,1050px)!important;margin-inline:auto;gap:14px!important; }
+      .report-heading { display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px 0 8px; }
+      .report-heading .result-trophy-art { width:clamp(104px,14vw,148px);height:clamp(104px,14vw,148px);margin-bottom:-12px; }
+      .report-heading h2 { margin:0;font-size:clamp(1.6rem,3vw,2.35rem)!important;line-height:1.15; }
+      .report-heading .report-subtitle { margin:0;color:#806b8e;font-family:Georgia,serif;font-weight:600; }
+      .report-heading #summaryPlayerName { margin-top:5px;color:#806b8e!important;font-size:.9rem; }
+      .report-card { min-width:0;padding:14px 16px;border:1px solid #e6d5ed;border-radius:18px;background:linear-gradient(150deg,rgba(255,255,255,.88),rgba(246,238,252,.94));box-shadow:0 5px 16px rgba(72,48,99,.055); }
+      .report-stat-grid { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px; }
+      .report-stat { display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:108px;text-align:center; }
+      .report-stat-icon { color:#b78342;font-size:22px; }
+      .report-stat-label { color:#806b8e;font-size:clamp(.68rem,1.1vw,.82rem);font-weight:700; }
+      .report-stat-value { color:#5b3d78;font-size:clamp(1.15rem,2.5vw,1.75rem);font-weight:800;line-height:1.1; }
+      .report-answer-counts { color:#806b8e;font-size:.65rem;font-weight:700;line-height:1.25;white-space:normal; }
+      #reportAccuracyValue { color:#7652a6; }
+      #reportTimeValue { font-size:clamp(.95rem,1.8vw,1.3rem); }
+      .report-stat-track { width:100%;height:9px;overflow:hidden;border:1px solid #e0d1e9;border-radius:999px;background:#f0e7f5; }
+      .report-stat-progress { height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#8f6bb8,#c09bd1 58%,#e3c284);transition:width .6s ease; }
+      .report-section-title { display:flex;align-items:center;gap:8px;margin:0 0 12px;color:#5c3e7b;font-size:1rem;font-weight:800; }
+      .report-section-title i { color:#b78342; }
+      .report-detail-grid { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+      .report-question-grid { display:grid;grid-template-columns:repeat(5,minmax(38px,1fr));gap:8px; }
+      .report-question-chip { display:flex;align-items:center;justify-content:center;gap:5px;min-height:38px;border:1px solid #e1d3e9;border-radius:999px;background:#f7f1fa;color:#705982;font-size:.77rem;font-weight:700; }
+      .report-question-chip.is-correct { background:#e7f6ee;border-color:#a9ddbf;color:#287b55; }
+      .report-question-chip.is-wrong { background:#fff0f1;border-color:#efc1ca;color:#bc5066; }
+      .report-question-chip.is-timeout { background:#f1edf4;border-color:#ddd3e4;color:#8b7c94; }
+      .report-question-legend { display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;color:#806b8e;font-size:.68rem;font-weight:600; }
+      .report-question-legend span { display:inline-flex;align-items:center;gap:5px; }
+      .report-question-legend .legend-correct { color:#287b55; }
+      .report-question-legend .legend-wrong { color:#bc5066; }
+      .report-question-legend .legend-timeout { color:#8b7c94; }
+      .report-category-list { display:grid;gap:10px; }
+      .report-category-row { display:grid;grid-template-columns:minmax(110px,1fr) minmax(70px,1.3fr) auto;align-items:center;gap:8px;color:#665375;font-size:.75rem; }
+      .report-category-name { overflow-wrap:anywhere;line-height:1.25;font-weight:700; }
+      .report-category-track { height:10px;overflow:hidden;border:1px solid #e4d8eb;border-radius:999px;background:#f0e8f4; }
+      .report-category-progress { height:100%;border-radius:inherit;background:linear-gradient(90deg,#936dbb,#dfbd77); }
+      .report-category-score { min-width:34px;text-align:right;font-weight:700;color:#806b8e; }
+      .report-insights { min-height:112px;background:linear-gradient(145deg,rgba(255,255,255,.86),rgba(247,241,250,.92)); }
+      .report-insight-list { display:grid;gap:9px;margin:0;padding:0;list-style:none;color:#655375;font-size:.82rem;line-height:1.5; }
+      .report-insight-list li { display:flex;align-items:flex-start;gap:8px; }
+      .report-insight-list i { margin-top:3px;color:#36936d; }
+      .report-insights.is-improvement .report-insight-list i { color:#cf6678; }
+      .report-actions { display:flex;justify-content:center;flex-wrap:wrap;gap:10px;padding-top:2px; }
+      #resultScreen .report-actions .game-action { min-width:150px; }
+      #resultScreen .report-actions .game-action.primary { background:linear-gradient(120deg,#805db0,#a17bc2)!important;color:#fff!important;border-color:#805db0!important; }
+      #resultScreen .report-actions .game-action.primary:hover { background:#7651a7!important; }
+      #accuracyProgressBar { display:none; }
+      #resultScreen > .text-center > div:first-child { padding:0;border:0!important;background:transparent!important;box-shadow:none!important; }
+      #quizScreen .option-btn { min-height:76px;padding:18px 20px!important;color:#352747!important;font-size:clamp(16px,1.8vw,19px)!important;font-weight:600!important;border-width:1.5px!important;border-radius:17px!important;box-shadow:0 4px 0 rgba(71,50,99,.08)!important; }
       #quizScreen .option-btn span { color:#352747!important; }
       #quizScreen .option-btn:nth-child(1) { background:#f0e8fb!important; border-color:#c8afe6!important; }
       #quizScreen .option-btn:nth-child(2) { background:#e9f2ff!important; border-color:#a9c7ef!important; }
@@ -396,7 +1118,7 @@
       #quizScreen .option-btn[class*="bg-emerald"] span { color:#145b37!important; }
       #quizScreen .option-btn[class*="bg-rose"] { background:#fff0f1!important; border-color:#dc8292!important; }
       #quizScreen .option-btn[class*="bg-rose"] span { color:#8b2638!important; }
-      #reviewAnswersList > div,#leaderboardList > div { background:rgba(255,255,255,.88)!important; color:#403451!important; border-color:#e7d9ef!important; }
+      #reviewAnswersList > div { background:rgba(255,255,255,.88)!important; color:#403451!important; border-color:#e7d9ef!important; }
       #toast { background:#fffdfb!important; color:#352747!important; border-color:#e8d8ee!important; }
       #bgmToggleBtn { color:#6d5199!important; } #volumeSlider { accent-color:#8d70b8!important; }
       ::-webkit-scrollbar-track { background:#f2eaf8!important; } ::-webkit-scrollbar-thumb { background:#b8a2cf!important; border-radius:8px; }
@@ -419,6 +1141,15 @@
         #resultScreen .grid-cols-3 { gap:8px; }
         #resultScreen .grid-cols-3 > div { padding:10px 6px; }
         #resultScreen .grid-cols-3 > div > div:first-child { font-size:11px; }
+        #resultScreen { gap:11px!important;padding:14px!important; }
+        .report-stat-grid { grid-template-columns:repeat(2,minmax(0,1fr));gap:8px; }
+        .report-stat { min-height:94px;padding:10px; }
+        .report-detail-grid { grid-template-columns:1fr; }
+        .report-question-grid { grid-template-columns:repeat(5,minmax(34px,1fr));gap:6px; }
+        .report-question-chip { min-height:34px;font-size:.7rem; }
+        .report-category-row { grid-template-columns:minmax(90px,1fr) minmax(55px,1fr) auto;font-size:.7rem; }
+        #resultScreen .report-actions { display:grid;grid-template-columns:1fr; }
+        #resultScreen .report-actions .game-action { width:100%; }
         .sound-control,.sound-control.is-expanded { top:4px!important;left:auto!important;right:4px!important;transform:none;width:min(78vw,290px)!important;aspect-ratio:3 / 1;height:auto!important; }
         .sound-expand-button { width:clamp(64px,20vw,84px);height:34px;font-size:12px; }
         .sound-controls-panel { gap:1px!important; }
@@ -478,6 +1209,127 @@
         .intro-closed-art,.intro-next-button { transition:none!important; }
         .intro-closed-art::after { animation:none!important; }
       }
+      #gameMain.is-entry-screen.teamwork-welcome-active {
+        width:min(100%,1240px)!important;max-width:calc(100vw - 48px)!important;
+        border-color:rgba(193,151,79,.86)!important;
+        background:
+          radial-gradient(ellipse at 73% 48%,rgba(231,214,243,.38),transparent 48%),
+          linear-gradient(145deg,rgba(255,252,246,.98),rgba(247,239,251,.98))!important;
+        box-shadow:0 24px 68px rgba(40,24,58,.24),inset 0 0 0 3px rgba(255,255,255,.76),inset 0 0 0 5px rgba(197,157,94,.18)!important;
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active #teamworkWelcomeScreen {
+        display:grid!important;grid-template-columns:minmax(110px,170px) minmax(0,1fr);
+        grid-template-areas:"banner banner" "badge badge" "copy copy" "info info" "start start" "mascot guidance";
+        grid-template-rows:auto auto auto auto auto auto;align-content:center;align-items:center;justify-items:center;
+        column-gap:clamp(12px,2vw,24px);row-gap:clamp(8px,1.45vh,14px);
+        padding:58px 34px 28px!important;
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-banner {
+        grid-area:banner;width:min(100%,1040px);max-height:min(35vh,320px);margin:0!important;
+        filter:drop-shadow(0 15px 28px rgba(72,45,91,.23));
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-badge { grid-area:badge; }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-copy {
+        grid-area:copy;width:min(100%,840px);padding:clamp(9px,1.4vh,14px) clamp(16px,2.5vw,28px);
+        border:1px solid rgba(197,157,94,.28);border-radius:22px;
+        background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(250,244,252,.62));
+        box-shadow:0 8px 22px rgba(77,52,103,.055),inset 0 1px 0 rgba(255,255,255,.88);
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active #teamworkWelcomeTitle {
+        font-size:clamp(2.25rem,5.4vh,3.65rem)!important;line-height:1.1!important;
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-copy p {
+        max-width:68ch;margin:8px auto 0;font-size:clamp(.94rem,1.9vh,1.12rem)!important;line-height:1.5!important;
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-info { grid-area:info;gap:12px; }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-chip {
+        min-height:42px;padding:8px 18px;font-size:.94rem;
+        border-color:#d2b6df;background:linear-gradient(135deg,#fff,#f3eafa);
+        box-shadow:0 5px 14px rgba(77,52,103,.09);
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-actions {
+        grid-area:start;display:flex;align-items:center;justify-content:center;gap:clamp(4px,.55vw,8px);
+        width:fit-content;max-width:100%;min-width:0;margin-inline:auto;
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-actions #teamworkWelcomeBackButton {
+        flex:none;width:min(34vw,320px);height:clamp(58px,10vh,86px);max-width:none;max-height:none;
+        display:block;aspect-ratio:auto;
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-next {
+        flex:none;width:min(34vw,320px)!important;height:clamp(58px,10vh,86px)!important;max-height:none!important;
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-guidance {
+        grid-area:guidance;align-self:center;justify-self:stretch;max-width:none;margin:0!important;
+        padding:10px 16px;text-align:center;font-size:clamp(.86rem,1.65vh,.98rem)!important;
+        border:1px solid rgba(197,157,94,.3);border-radius:16px;
+        background:linear-gradient(135deg,rgba(255,251,241,.8),rgba(248,240,251,.8));
+        box-shadow:0 4px 14px rgba(77,52,103,.05);
+      }
+      #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-mascot {
+        position:relative;grid-area:mascot;left:auto;right:auto;top:auto;bottom:auto;align-self:center;justify-self:center;
+        width:min(100%,170px);margin:0;overflow:visible;
+      }
+      @media(max-width:760px) {
+        #gameMain.is-entry-screen.teamwork-welcome-active {
+          max-width:calc(100vw - 28px)!important;padding:14px!important;
+        }
+        #gameMain.is-entry-screen.teamwork-welcome-active #teamworkWelcomeScreen {
+          grid-template-columns:76px minmax(0,1fr);
+          grid-template-areas:"banner banner" "badge badge" "copy copy" "info info" "start start" "mascot guidance";
+          grid-template-rows:auto auto auto auto auto auto;align-content:center;
+          column-gap:8px;row-gap:clamp(6px,1.2vh,11px);padding:50px 10px 10px!important;
+        }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-banner {
+          width:min(100%,700px);max-height:22vh;
+        }
+        #gameMain.is-entry-screen.teamwork-welcome-active #teamworkWelcomeTitle {
+          font-size:clamp(1.65rem,4.7vh,2.55rem)!important;
+        }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-copy p {
+          max-width:48ch;margin-top:6px;font-size:clamp(.86rem,1.8vh,1.02rem)!important;
+        }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-info { gap:7px; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-chip {
+          min-height:35px;padding:7px 12px;font-size:.82rem;
+        }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-next {
+          width:min(40vw,160px)!important;height:auto!important;aspect-ratio:1983 / 793;
+        }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-actions { gap:4px; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-actions #teamworkWelcomeBackButton {
+          width:min(40vw,160px)!important;height:auto;aspect-ratio:1983 / 793;
+        }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-mascot {
+          position:relative;grid-area:mascot;justify-self:center;align-self:center;width:76px;margin:0;
+        }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-guidance {
+          grid-area:guidance;align-self:center;justify-self:stretch;max-width:none;margin:0!important;
+          padding:8px;text-align:center;font-size:.76rem!important;
+        }
+      }
+      @media(max-width:420px) {
+        #gameMain.is-entry-screen.teamwork-welcome-active { max-width:calc(100vw - 18px)!important;padding:10px!important; }
+        #gameMain.is-entry-screen.teamwork-welcome-active #teamworkWelcomeScreen { grid-template-columns:66px minmax(0,1fr);padding-right:5px;padding-left:5px; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-banner { max-height:19vh; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-badge { gap:7px;padding:6px 11px;font-size:.72rem; }
+        #gameMain.is-entry-screen.teamwork-welcome-active #teamworkWelcomeTitle { font-size:clamp(1.48rem,4.2vh,1.85rem)!important; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-copy p { font-size:.84rem!important;line-height:1.45!important; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-chip { min-height:33px;padding:6px 9px;font-size:.74rem; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-actions { gap:3px; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-mascot { width:66px; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-guidance {
+          padding:6px;font-size:.68rem!important;
+        }
+      }
+      @media(max-height:680px) and (min-width:761px) {
+        #gameMain.is-entry-screen.teamwork-welcome-active #teamworkWelcomeScreen { row-gap:5px;padding-top:48px;padding-bottom:16px!important; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-banner { max-height:26vh; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-copy p { margin-top:4px; }
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-mascot { width:min(100%,132px); }
+      }
+      @media(prefers-reduced-motion:reduce) {
+        #gameMain.is-entry-screen.teamwork-welcome-active .teamwork-welcome-mascot img { animation:none!important; }
+      }
     </style>
 </head>
 <body class="entry-screen-active flex items-center justify-center min-h-screen p-4 sm:p-6 overflow-x-hidden">
@@ -515,23 +1367,47 @@
         <section id="introOpenStage" class="intro-stage hidden" aria-labelledby="introOpenTitle">
             <div class="intro-open-content">
                 <img class="intro-open-parchment" src="social_science_arena_fairytale_assets/intro-open-scroll.png" alt="" aria-hidden="true">
+                <button id="introOpenBackButton" type="button" aria-label="ย้อนกลับไปหน้าม้วนคัมภีร์" onclick="returnToClosedScroll()">
+                    <img src="social_science_arena_fairytale_assets/revest.png" alt="" aria-hidden="true">
+                </button>
                 <div class="intro-open-copy">
                     <div>
                         <h1 id="introOpenTitle" tabindex="-1">ยินดีต้อนรับสู่สถาบันเวทมนตร์แห่งความรู้</h1>
                         <p>เตรียมพร้อมท้าทายความรู้ทางสังคมศาสตร์ แล้วออกเดินทางใน Social Science Arena</p>
                     </div>
-                    <div id="introQrSlot" class="intro-qr-slot">
-                        <button id="introQrButton" type="button" class="intro-qr-button" aria-label="ขยายดูภาพ QR Code">
-                            <img class="intro-qr-frame-art" src="social_science_arena_fairytale_assets/qr-magical-frame.png" alt="" aria-hidden="true">
-                            <img class="intro-qr-image" src="social_science_arena_fairytale_assets/website-qr-code.png" alt="QR Code สำหรับเข้าเว็บไซต์">
+                    <p class="intro-mode-hint">เลือกโหมดการผจญภัยที่ต้องการ</p>
+                    <div class="intro-mode-choices" aria-label="เลือกโหมดเกม">
+                        <button id="soloModeButton" type="button" class="intro-mode-choice" aria-label="เลือกโหมด Solo Player เล่นคนเดียว">
+                            <img src="social_science_arena_fairytale_assets/solo-player.png" alt="Solo Player">
                         </button>
-                        <span class="intro-qr-caption">QR Code สำหรับเข้าเว็บ</span>
-                        <span class="intro-qr-note">สแกนเพื่อเข้าเว็บไซต์</span>
+                        <button id="teamworkModeButton" type="button" class="intro-mode-choice" aria-label="เลือกโหมด Teamwork เล่นเป็นทีม">
+                            <img src="social_science_arena_fairytale_assets/teamwork.png" alt="Teamwork">
+                        </button>
                     </div>
-                    <button id="introNextButton" type="button" class="intro-next-button" aria-label="ไปหน้าต้อนรับ">
-                        <img src="social_science_arena_fairytale_assets/intro-next-button.png" alt="ต่อไป">
-                    </button>
                 </div>
+            </div>
+        </section>
+        <section id="soloQrStage" class="intro-stage hidden" aria-labelledby="soloQrTitle">
+            <div class="intro-open-content">
+                <img class="intro-open-parchment" src="social_science_arena_fairytale_assets/intro-open-scroll.png" alt="" aria-hidden="true">
+                <button id="soloQrBackButton" type="button" class="intro-qr-back" aria-label="ย้อนกลับไปเลือกโหมด">
+                    <img src="social_science_arena_fairytale_assets/revest.png" alt="" aria-hidden="true">
+                </button>
+                <div class="intro-qr-copy">
+                    <h1 id="soloQrTitle" tabindex="-1">ร่วมเดินทางไปด้วยกันในโลกแห่งความรู้สังคมศาสตร์</h1>
+                    <p>สแกนคิวอาร์โค้ดเพื่อเปิดเว็บไซต์บนอุปกรณ์ของคุณ</p>
+                </div>
+                <div class="intro-qr-card">
+                    <button id="soloQrImageButton" type="button" class="intro-qr-button intro-qr-slot" aria-label="ขยาย QR Code สำหรับเข้าเว็บไซต์">
+                        <img class="intro-qr-frame-art" src="social_science_arena_fairytale_assets/qr-magical-frame.png" alt="" aria-hidden="true">
+                        <img class="intro-qr-image" src="social_science_arena_fairytale_assets/website-qr-code.png" alt="QR Code สำหรับเข้าเว็บไซต์">
+                    </button>
+                    <span class="intro-qr-caption">QR Code สำหรับเข้าเว็บไซต์</span>
+                    <span class="intro-qr-note">สแกนเพื่อร่วมออกเดินทางไปด้วยกัน</span>
+                </div>
+                <button id="soloQrNextButton" type="button" class="intro-next-button intro-qr-next" aria-label="ต่อไป">
+                    <img src="social_science_arena_fairytale_assets/intro-next-button.png" alt="ต่อไป">
+                </button>
             </div>
         </section>
     </div>
@@ -554,12 +1430,20 @@
     <main id="gameMain" class="hidden is-entry-screen w-full max-w-3xl bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
         <!-- ================= WELCOME SCREEN ================= -->
         <section id="welcomeScreen" class="welcome-panel flex flex-col items-center text-center py-5 sm:py-8 px-3 sm:px-6 rounded-3xl space-y-5 sm:space-y-6">
-            <button id="welcomeScreenBackButton" type="button" aria-label="ย้อนกลับไปหน้าคิวอาร์โค้ด" onclick="returnToQrScreen()" onmouseenter="playHoverSound()">
+            <button id="welcomeScreenBackButton" type="button" aria-label="ย้อนกลับไปหน้าเลือกโหมด" onclick="returnToQrScreen()" onmouseenter="playHoverSound()">
                 <img src="social_science_arena_fairytale_assets/revest.png" alt="" aria-hidden="true">
             </button>
             <img src="social_science_arena_fairytale_assets/branner.png"
                  alt="แบนเนอร์ Social Science Arena"
                  class="welcome-banner" />
+            <div class="game-panel flex flex-col items-center gap-3 w-full max-w-md">
+                <h2 class="text-xl font-bold">สแกน QR Code เพื่อเปิดเกมบนอุปกรณ์ของคุณ</h2>
+                <button id="soloQrButton" type="button" class="qr-modal-image-frame solo-qr-button" aria-label="ขยายดู QR Code สำหรับเข้าเว็บไซต์">
+                    <img src="social_science_arena_fairytale_assets/qr-magical-frame.png" alt="" aria-hidden="true">
+                    <img class="qr-modal-image" src="social_science_arena_fairytale_assets/website-qr-code.png" alt="QR Code สำหรับเข้าเว็บไซต์ Social Science Arena">
+                </button>
+                <p class="text-sm">โหมด Solo Player เริ่มจากหน้า QR Code ก่อนตั้งชื่อผู้เล่น</p>
+            </div>
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-300/70 bg-white/75 text-[#80613a] shadow-sm">
                 <i class="fas fa-sparkles text-[#b78342]"></i>
                 <span class="text-xs sm:text-sm font-bold tracking-wide">ยินดีต้อนรับสู่โลกแห่งการเรียนรู้</span>
@@ -575,13 +1459,13 @@
             <div class="flex items-center gap-3 text-xs sm:text-sm font-semibold text-[#80613a]">
                 <span><i class="fas fa-book-open text-[#8063b4] mr-1"></i> 10 คำถาม</span>
                 <span class="text-[#c6a979]">✦</span>
-                <span><i class="fas fa-hourglass-half text-[#b78342] mr-1"></i> ข้อละ 30 วินาที</span>
+                <span><i class="fas fa-hourglass-half text-[#b78342] mr-1"></i> ข้อละ 60 วินาที</span>
             </div>
             <button type="button" aria-label="เริ่มเกม" onclick="showNameScreen()" onmouseenter="playHoverSound()"
                 class="start-game-art" style="-webkit-appearance:none;appearance:none">
-                <img src="social_science_arena_fairytale_assets/Next.png" alt="" aria-hidden="true">
+                <img id="soloContinueArt" src="social_science_arena_fairytale_assets/Next.png" alt="" aria-hidden="true">
             </button>
-            <span class="text-xs text-[#8c829c]">เตรียมตัวให้พร้อม แล้วมาเริ่มการผจญภัยกัน!</span>
+            <span class="text-xs text-[#8c829c]">เลือก Solo Player เพื่อเริ่มเล่นแบบรายบุคคล</span>
         </section>
 
         <!-- ================= START SCREEN ================= -->
@@ -603,14 +1487,14 @@
             </h1>
             
             <p class="text-slate-400 text-sm sm:text-base max-w-lg">
-                ทบทวนความรู้และทดสอบความเข้าใจเกี่ยวกับแนวคิดคำศัพท์สังคมศาสตร์ 10 ข้อ จับเวลา 30 วินาทีต่อข้อ และระบุชื่อผู้เล่นของคุณเพื่อเริ่มต้นการผจญภัยในโลกแห่งความรู้!
+                ทบทวนความรู้และทดสอบความเข้าใจเกี่ยวกับแนวคิดคำศัพท์สังคมศาสตร์ 10 ข้อ จับเวลา 60 วินาทีต่อข้อ และระบุชื่อผู้เล่นของคุณเพื่อเริ่มต้นการผจญภัยในโลกแห่งความรู้!
             </p>
 
             <div class="w-full max-w-md space-y-4 pt-4">
                 <div class="relative">
                     <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                    <input type="text" id="playerNameInput" aria-label="ชื่อผู้เล่น" placeholder="ชื่อผู้เล่น" 
-                        class="w-full bg-slate-800/90 border-2 border-slate-700 rounded-xl py-3.5 pl-11 pr-4 text-white placeholder-slate-500 focus:outline-none focus:border-brand-purple transition font-medium text-lg">
+                    <input type="text" id="playerNameInput" aria-label="ชื่อผู้เล่น" placeholder="ชื่อผู้เล่น"
+                        maxlength="40" autocomplete="nickname" class="w-full bg-slate-800/90 border-2 border-slate-700 rounded-xl py-3.5 pl-11 pr-4 text-white placeholder-slate-500 focus:outline-none focus:border-brand-purple transition font-medium text-lg">
                 </div>
 
                 <button type="button" aria-label="เริ่มเล่นควิซ" onclick="startGame()" onmouseenter="playHoverSound()"
@@ -623,32 +1507,92 @@
         <!-- ================= QUIZ SCREEN ================= -->
         <section id="quizScreen" class="hidden space-y-6">
             <!-- Header Bar -->
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                <div class="flex items-center gap-3">
+            <div class="quiz-header flex items-center justify-between border-b border-slate-800 pb-4">
+                <div class="quiz-header-left flex items-center gap-3">
+                    <button id="soloBackToNameButton" type="button" class="hidden game-action px-3 py-1.5 text-sm" onclick="returnToNameScreen()" aria-label="กลับไปตั้งชื่อผู้เล่น">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i> กลับไปตั้งชื่อ
+                    </button>
+                    <button id="teamworkMenuButton" type="button" class="teamwork-only" onclick="returnTeamworkToMenu()" aria-label="กลับสู่หน้าเมนู Teamwork">
+                        <i class="fas fa-house" aria-hidden="true"></i><span>กลับเมนู</span>
+                    </button>
                     <span id="questionNum" aria-live="polite" class="text-xs font-bold text-brand-purple bg-brand-purple/20 px-3 py-1.5 rounded-lg border border-brand-purple/30">
                         ข้อ 1 / 10
                     </span>
                     <span id="playerDisplay" class="text-sm font-semibold text-slate-300"></span>
                 </div>
+                <div class="quiz-board-title" aria-live="polite">
+                    <span>ห้องเรียนเวทมนตร์ · ภารกิจความรู้</span>
+                    <strong id="quizTermTitle">คำถามประจำข้อ</strong>
+                </div>
 
-                <!-- Streak & Timer -->
-                <div class="flex items-center gap-3">
-                    <div id="streakBadge" class="hidden items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-xl text-amber-400 font-bold text-xs">
-                        <i class="fas fa-fire animate-bounce"></i> <span id="streakCount">0</span> Streak
+                <div class="quiz-header-right">
+                    <!-- Streak & Timer -->
+                    <div class="flex items-center gap-3">
+                        <div id="streakBadge" class="hidden items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-xl text-amber-400 font-bold text-xs">
+                            <i class="fas fa-fire animate-bounce"></i> <span id="streakCount">0</span> Streak
+                        </div>
+
+                        <div id="timerContainer" class="flex items-center gap-2 bg-slate-800/80 px-4 py-1.5 rounded-xl border border-slate-700" aria-label="เวลาที่เหลือ">
+                            <i class="fas fa-clock text-yellow-400" aria-hidden="true"></i>
+                            <span id="timerText" class="font-outfit font-bold text-xl text-yellow-400">60</span>
+                        </div>
                     </div>
 
-                    <div id="timerContainer" class="flex items-center gap-2 bg-slate-800/80 px-4 py-1.5 rounded-xl border border-slate-700">
-                        <i class="fas fa-clock text-yellow-400"></i>
-                        <span id="timerText" class="font-outfit font-bold text-xl text-yellow-400">30</span>
+                    <div class="quiz-runtime-controls">
+                        <button id="pauseTeamworkButton" class="teamwork-only" type="button" onclick="toggleTeamworkPause()" aria-label="หยุดหรือเริ่มเวลาต่อ">
+                            <i class="fas fa-pause" aria-hidden="true"></i> หยุดเวลา
+                        </button>
+                        <button id="nextTeamQuestionButton" class="teamwork-only hidden" type="button" onclick="advanceTeamQuestion()">ไปข้อถัดไป</button>
+                        <button id="fullscreenTeamworkButton" class="teamwork-only" type="button" onclick="toggleTeamworkFullscreen()" aria-label="สลับโหมดเต็มหน้าจอ">
+                            <i class="fas fa-expand" aria-hidden="true"></i> เต็มหน้าจอ
+                        </button>
                     </div>
                 </div>
             </div>
+            <div id="quizProgressTrack" role="progressbar" aria-label="ความคืบหน้าของแบบทดสอบ" aria-valuemin="0" aria-valuemax="10" aria-valuenow="1">
+                <div id="quizProgressFill"></div>
+            </div>
+            <div id="quizProgressDots" class="quiz-progress-dots" role="list" aria-label="สถานะคำถาม"></div>
+
+            <details id="quizSidebarDetails" class="quiz-sidebar-details" open>
+                <summary>
+                    <i class="fas fa-chart-pie" aria-hidden="true"></i>
+                    <span>ข้อมูลการผจญภัย</span>
+                    <i class="fas fa-chevron-down sidebar-toggle-icon" aria-hidden="true"></i>
+                </summary>
+                <div class="quiz-play-stats" aria-label="สถิติการเล่นปัจจุบัน">
+                    <div class="quiz-play-stat">
+                        <span class="quiz-play-stat-icon"><i class="fas fa-hourglass-half" aria-hidden="true"></i></span>
+                        <span><span class="quiz-play-stat-label">เวลาที่ใช้</span><strong id="soloElapsedStat" class="quiz-play-stat-value">00:00</strong></span>
+                    </div>
+                    <div class="quiz-play-stat">
+                        <span class="quiz-play-stat-icon"><i class="fas fa-trophy" aria-hidden="true"></i></span>
+                        <span><span class="quiz-play-stat-label">คะแนนปัจจุบัน</span><strong id="soloScoreStat" class="quiz-play-stat-value">0 / 10</strong></span>
+                    </div>
+                    <div class="quiz-play-stat">
+                        <span class="quiz-play-stat-icon"><i class="fas fa-circle-check" aria-hidden="true"></i></span>
+                        <span><span class="quiz-play-stat-label">คำตอบถูก</span><strong id="soloCorrectStat" class="quiz-play-stat-value">0</strong></span>
+                    </div>
+                    <div class="quiz-play-stat">
+                        <span class="quiz-play-stat-icon"><i class="fas fa-circle-xmark" aria-hidden="true"></i></span>
+                        <span><span class="quiz-play-stat-label">คำตอบผิด</span><strong id="soloWrongStat" class="quiz-play-stat-value">0</strong><small id="soloMissedStat" class="quiz-play-stat-note">หมดเวลา 0</small></span>
+                    </div>
+                    <div class="quiz-play-stat">
+                        <span class="quiz-play-stat-icon"><i class="fas fa-bullseye" aria-hidden="true"></i></span>
+                        <span><span class="quiz-play-stat-label">ความแม่นยำ</span><strong id="soloAccuracyStat" class="quiz-play-stat-value">0%</strong></span>
+                    </div>
+                </div>
+                <div class="quiz-sidebar-mascot">
+                    <div id="quizMascotBubble" class="quiz-mascot-bubble" aria-live="polite">อ่านคำถามให้ดี ๆ นะ คุณทำได้!</div>
+                    <img src="social_science_arena_fairytale_assets/fairytale-mascot.png" alt="แมวพ่อมดกำลังอ่านหนังสือเวทมนตร์">
+                </div>
+            </details>
 
             <!-- Question & Hint -->
-            <div class="space-y-4">
-                <h2 id="questionText" class="text-xl sm:text-2xl font-bold text-white leading-snug"></h2>
+            <div class="quiz-prompt-card space-y-4">
+                <h2 id="questionText" class="text-2xl sm:text-3xl font-bold text-white leading-snug"></h2>
                 
-                <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 sm:p-5 relative">
+                <div class="quiz-hint-card relative">
                     <div class="hint-heading flex items-center gap-2 font-bold text-xs uppercase tracking-wider mb-2">
                         <i class="fas fa-lightbulb"></i> คำใบ้ (Hint)
                     </div>
@@ -660,93 +1604,290 @@
             <div id="optionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 <!-- Dynamic choices injected here -->
             </div>
-            <p class="text-xs text-slate-400 text-center" aria-label="วิธีใช้คีย์บอร์ด">
-                ใช้ Tab เพื่อเลือกคำตอบ หรือกดปุ่ม 1–4 บนคีย์บอร์ด
-            </p>
+            <button id="confirmSoloAnswerButton" type="button" onclick="confirmSoloAnswer()" disabled>
+                <i class="fas fa-gem" aria-hidden="true"></i>
+                <span>ยืนยันคำตอบ</span>
+            </button>
+            <p id="keyboardHelpText" class="text-xs text-slate-400 text-center" aria-label="วิธีเล่น"></p>
         </section>
 
         <!-- ================= RESULT SCREEN (Quizizz Reports Theme) ================= -->
         <section id="resultScreen" class="hidden space-y-6">
-            <div class="text-center space-y-2">
-                <div class="inline-block p-3 bg-emerald-500/10 text-emerald-400 rounded-full mb-1 border border-emerald-500/20">
-                    <i class="fas fa-trophy text-3xl"></i>
+            <div class="report-heading text-center">
+                <div class="result-trophy-art" aria-hidden="true">
+                    <img src="social_science_arena_fairytale_assets/fairytale-cup.png" alt="">
                 </div>
-                <h2 class="text-2xl sm:text-3xl font-black text-white">รายงานผลการควิซ (Quiz Report)</h2>
+                <h2>รายงานผลการควิซ</h2>
+                <p class="report-subtitle">Quiz Report</p>
                 <p id="summaryPlayerName" class="text-slate-400 font-medium"></p>
+                <p class="text-xs text-slate-400">รายงานผลการเล่นของคุณ ตรวจดูรายละเอียดด้านล่างได้เลย</p>
             </div>
-
-            <!-- Accuracy Bar Card -->
-            <div class="bg-slate-800/70 border border-slate-700 rounded-2xl p-5 space-y-3">
-                <div class="flex justify-between items-center text-sm font-bold">
-                    <span class="text-slate-300">ความถูกต้อง (Accuracy)</span>
-                    <span id="accuracyPercentText" class="text-xl font-outfit font-black">0%</span>
-                </div>
-                <!-- Outer Bar -->
-                <div class="w-full bg-slate-900 h-6 rounded-full overflow-hidden p-1 border border-slate-700">
-                    <!-- Inner Progress Bar -->
-                    <div id="accuracyProgressBar" class="h-full rounded-full transition-all duration-1000 ease-out w-0"></div>
-                </div>
-                <p id="accuracyFeedback" class="text-xs text-slate-400 text-center pt-1"></p>
+            <div class="report-stat-grid" aria-label="สถิติผลการเล่น">
+                <article class="report-card report-stat">
+                    <i class="fas fa-star report-stat-icon" aria-hidden="true"></i>
+                    <span class="report-stat-label">คะแนนที่ได้</span>
+                    <strong id="scoreStat" class="report-stat-value">0 / 10</strong>
+                </article>
+                <article class="report-card report-stat">
+                    <i class="fas fa-bullseye report-stat-icon" aria-hidden="true"></i>
+                    <span class="report-stat-label">ความถูกต้อง</span>
+                    <strong id="accuracyPercentText" class="report-stat-value">0%</strong>
+                    <div class="report-stat-track" role="progressbar" aria-label="ความถูกต้อง" aria-valuemin="0" aria-valuemax="100">
+                        <div id="accuracyProgressBar" class="report-stat-progress"></div>
+                    </div>
+                </article>
+                <article class="report-card report-stat">
+                    <i class="far fa-clock report-stat-icon" aria-hidden="true"></i>
+                    <span class="report-stat-label">เวลาที่ใช้</span>
+                    <strong id="reportTimeValue" class="report-stat-value">00:00.000</strong>
+                </article>
+                <article class="report-card report-stat">
+                    <i class="fas fa-clipboard-check report-stat-icon" aria-hidden="true"></i>
+                    <span class="report-stat-label">จำนวนข้อที่ตอบ</span>
+                    <strong id="reportAnsweredValue" class="report-stat-value">0 / 10</strong>
+                    <span class="report-answer-counts"><span id="correctStat">0</span> ถูก · <span id="wrongStat">0</span> ผิด · <span id="timeoutStat">0</span> หมดเวลา</span>
+                </article>
             </div>
-
-            <!-- Stats Overview -->
-            <div class="grid grid-cols-3 gap-3">
-                <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-400 font-medium">คะแนนรวม</div>
-                    <div id="scoreStat" class="text-xl sm:text-2xl font-bold text-brand-yellow font-outfit mt-1">0</div>
-                </div>
-                <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-400 font-medium">ตอบถูก</div>
-                    <div id="correctStat" class="text-xl sm:text-2xl font-bold text-emerald-400 font-outfit mt-1">0/10</div>
-                </div>
-                <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-400 font-medium">ตอบผิด/หมดเวลา</div>
-                    <div id="wrongStat" class="text-xl sm:text-2xl font-bold text-rose-400 font-outfit mt-1">0</div>
-                </div>
+            <p id="soloResultTime" class="hidden"></p>
+            <p id="accuracyFeedback" class="hidden"></p>
+            <div id="soloResultMeta" class="hidden"></div>
+            <button id="reviewToggleButton" type="button" class="hidden" aria-expanded="false" aria-controls="reviewAnswersContainer">
+                <span id="reviewToggleText">ดูข้อมูลความรู้</span>
+            </button>
+            <div id="reviewAnswersContainer" class="hidden"><div id="reviewAnswersList"></div></div>
+            <div class="report-detail-grid">
+                <section class="report-card" aria-labelledby="reportQuestionsTitle">
+                    <h3 id="reportQuestionsTitle" class="report-section-title"><i class="fas fa-sparkles" aria-hidden="true"></i> สรุปผลรายข้อ</h3>
+                    <div id="reportQuestionGrid" class="report-question-grid"></div>
+                    <div class="report-question-legend" aria-label="สัญลักษณ์สถานะคำตอบ">
+                        <span class="legend-correct"><i class="fas fa-check-circle" aria-hidden="true"></i> ตอบถูก</span>
+                        <span class="legend-wrong"><i class="fas fa-times-circle" aria-hidden="true"></i> ตอบผิด</span>
+                        <span class="legend-timeout"><i class="fas fa-hourglass-end" aria-hidden="true"></i> หมดเวลา</span>
+                    </div>
+                </section>
+                <section class="report-card" aria-labelledby="reportCategoriesTitle">
+                    <h3 id="reportCategoriesTitle" class="report-section-title"><i class="fas fa-compass" aria-hidden="true"></i> ผลคะแนนตามหมวดหมู่</h3>
+                    <div id="reportCategoryList" class="report-category-list"></div>
+                </section>
+                <section class="report-card report-insights" aria-labelledby="reportStrengthsTitle">
+                    <h3 id="reportStrengthsTitle" class="report-section-title"><i class="fas fa-star" aria-hidden="true"></i> จุดเด่นของคุณ</h3>
+                    <ul id="reportStrengthsList" class="report-insight-list"></ul>
+                </section>
+                <section class="report-card report-insights is-improvement" aria-labelledby="reportImproveTitle">
+                    <h3 id="reportImproveTitle" class="report-section-title"><i class="fas fa-bullseye" aria-hidden="true"></i> หัวข้อที่ควรพัฒนา</h3>
+                    <ul id="reportImproveList" class="report-insight-list"></ul>
+                </section>
             </div>
+            <div id="soloSummaryActions" class="report-actions">
+                <button type="button" class="game-action" onclick="openKnowledgeReview()"><i class="fas fa-book-open" aria-hidden="true"></i> ดูข้อมูลความรู้</button>
+                <button type="button" class="game-action primary" onclick="restartQuiz()"><i class="fas fa-redo" aria-hidden="true"></i> เล่นอีกครั้ง</button>
+                <button type="button" class="game-action" onclick="goHome()"><i class="fas fa-home" aria-hidden="true"></i> กลับไปหน้าเมนู</button>
+            </div>
+        </section>
 
-            <!-- Review Answers Toggle Button -->
-            <div class="text-center pt-2">
-                <button id="reviewToggleButton" type="button" aria-expanded="false" aria-controls="reviewAnswersContainer" onclick="toggleReviewAnswers()" onmouseenter="playHoverSound()"
-                    class="btn-vibrant w-full sm:w-auto bg-slate-800 hover:bg-slate-700 border border-brand-purple/50 text-brand-purple font-bold px-6 py-3 rounded-xl transition flex items-center justify-center gap-2 mx-auto">
-                    <i class="fas fa-list-check"></i> <span id="reviewToggleText">ดูเฉลยและทบทวนข้อสอบ (Review Answers)</span>
+        <section id="teamworkWelcomeScreen" class="hidden flex flex-col items-center text-center py-5 sm:py-8 px-3 sm:px-6 rounded-3xl space-y-5 sm:space-y-6" aria-labelledby="teamworkWelcomeTitle">
+            <img src="social_science_arena_fairytale_assets/branner.png"
+                 alt="แบนเนอร์ Social Science Arena"
+                 class="welcome-banner teamwork-welcome-banner">
+            <div class="teamwork-welcome-badge">
+                <i class="fas fa-sparkles text-[#b78342]" aria-hidden="true"></i>
+                <span class="text-xs sm:text-sm font-bold tracking-wide">ยินดีต้อนรับสู่ภารกิจ Teamwork</span>
+                <i class="fas fa-sparkles text-[#b78342]" aria-hidden="true"></i>
+            </div>
+            <div class="teamwork-welcome-copy">
+                <h1 id="teamworkWelcomeTitle" class="text-3xl sm:text-5xl font-black tracking-tight">Social Science Arena</h1>
+                <p>ร่วมมือกับทุกกลุ่ม ปรึกษากันและตอบคำถามผ่านจอส่วนกลาง โดยมีผู้ดำเนินกิจกรรมควบคุมเกม</p>
+            </div>
+            <div class="teamwork-welcome-info" aria-label="ข้อมูลเกม">
+                <span class="teamwork-welcome-chip"><i class="fas fa-book-open" aria-hidden="true"></i><span id="teamworkQuestionCount">10 คำถาม</span></span>
+                <span class="teamwork-welcome-chip"><i class="fas fa-hourglass-half" aria-hidden="true"></i><span id="teamworkQuestionTime">ข้อละ 60 วินาที</span></span>
+            </div>
+            <div class="teamwork-welcome-actions">
+                <button id="teamworkWelcomeBackButton" type="button" aria-label="ย้อนกลับไปเลือกโหมด" onclick="showModeSelection()" onmouseenter="playHoverSound()">
+                    <img src="social_science_arena_fairytale_assets/revest.png" alt="" aria-hidden="true">
+                </button>
+                <button type="button" aria-label="เริ่มเกม Teamwork" onclick="startTeamworkGame()" onmouseenter="playHoverSound()"
+                    class="start-game-art teamwork-welcome-next teamwork-start-button">
+                    <img src="social_science_arena_fairytale_assets/start.png" alt="" aria-hidden="true">
                 </button>
             </div>
+            <p class="teamwork-welcome-guidance">ให้แต่ละกลุ่มปรึกษากัน แล้วเลือกคำตอบบนจอ หากตอบผิดจะแสดงคำตอบที่ถูกต้อง</p>
+            <div class="teamwork-welcome-mascot">
+                <img src="social_science_arena_fairytale_assets/teamwork-wizard-mascot.png" alt="แมวพ่อมดโบกมือและถือคทาต้อนรับผู้เล่น">
+            </div>
+        </section>
 
-            <!-- Review Answers Section (Collapsible) -->
-            <div id="reviewAnswersContainer" class="hidden space-y-4 pt-2">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-2">
-                    <i class="fas fa-book-open text-brand-cyan"></i> ทบทวนเฉลยรายข้อ (All 10 Questions)
-                </h3>
-                <div id="reviewAnswersList" class="space-y-3 max-h-96 overflow-y-auto pr-1">
-                    <!-- Dynamic Answer Review Items -->
+        <section id="knowledgeReviewScreen" class="hidden game-panel" aria-labelledby="knowledgeReviewTitle">
+            <div id="soloReviewBoard">
+                <header class="review-header">
+                    <div class="review-header-copy">
+                        <h1 id="knowledgeReviewTitle" tabindex="-1">ทบทวนความรู้</h1>
+                        <p id="knowledgeReviewDescription">เลือกดูคำถามแต่ละข้อ เพื่อตรวจสอบคำตอบและทบทวนเนื้อหา</p>
+                    </div>
+                    <img class="review-header-art" src="social_science_arena_fairytale_assets/fairytale-mascot.png" alt="" aria-hidden="true">
+                </header>
+                <div class="review-board-layout">
+                    <aside class="review-sidebar" aria-label="ตัวนำทางและตัวกรองข้อสอบ">
+                        <div class="review-sidebar-heading">
+                            <span>เลือกข้อที่ต้องการ</span>
+                            <span id="reviewQuestionCount"></span>
+                        </div>
+                        <nav id="reviewQuestionList" class="review-question-list" aria-label="รายการคำถาม"></nav>
+                        <div class="review-filter-block">
+                            <span class="review-filter-label">แสดงเฉพาะ</span>
+                            <div class="review-filters" role="group" aria-label="กรองสถานะคำตอบ">
+                                <button type="button" class="review-filter-button" data-review-filter="all" aria-pressed="true">ทั้งหมด <span id="reviewAllCount" class="filter-count"></span></button>
+                                <button type="button" class="review-filter-button" data-review-filter="correct" aria-pressed="false">ตอบถูก <span id="reviewCorrectCount" class="filter-count"></span></button>
+                                <button type="button" class="review-filter-button" data-review-filter="wrong" aria-pressed="false">ตอบผิด <span id="reviewWrongCount" class="filter-count"></span></button>
+                                <button type="button" class="review-filter-button" data-review-filter="unanswered" aria-pressed="false">ยังไม่ได้ตอบ <span id="reviewUnansweredCount" class="filter-count"></span></button>
+                            </div>
+                        </div>
+                    </aside>
+                    <div class="review-main" aria-label="รายละเอียดคำถามที่เลือก">
+                        <div id="reviewQuestionDetails">
+                            <div class="review-question-toolbar">
+                                <button id="reviewPreviousButton" class="review-step-button" type="button" aria-label="ข้อก่อนหน้า">
+                                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                                </button>
+                                <h2 id="reviewQuestionPosition"></h2>
+                                <button id="reviewNextButton" class="review-step-button" type="button" aria-label="ข้อถัดไป">
+                                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                                </button>
+                                <span id="reviewStatusBadge" class="review-status-badge"></span>
+                                <span class="review-answer-time"><i class="fas fa-hourglass-half" aria-hidden="true"></i><span id="reviewAnswerTime"></span></span>
+                            </div>
+                            <h3 id="reviewTermHeading" class="review-term-heading"><i class="fas fa-book-open" aria-hidden="true"></i><span></span></h3>
+                            <section class="review-question-prompt" aria-labelledby="reviewPromptLabel">
+                                <h4 id="reviewPromptLabel" class="review-card-label"><i class="fas fa-circle-question" aria-hidden="true"></i> คำถาม</h4>
+                                <p id="reviewPrompt"></p>
+                            </section>
+                            <section class="review-options-card" aria-labelledby="reviewOptionsLabel">
+                                <h4 id="reviewOptionsLabel" class="review-card-label"><i class="fas fa-list-check" aria-hidden="true"></i> ตัวเลือกคำตอบ</h4>
+                                <div id="reviewOptionList" class="review-option-list"></div>
+                            </section>
+                            <section class="review-correct-card" aria-labelledby="reviewCorrectLabel">
+                                <h4 id="reviewCorrectLabel" class="review-card-label"><i class="fas fa-circle-check" aria-hidden="true"></i> คำตอบที่ถูกต้อง</h4>
+                                <p id="reviewCorrectAnswer"></p>
+                            </section>
+                            <section id="reviewExplanationCard" class="review-explanation-card" aria-labelledby="reviewExplanationLabel">
+                                <h4 id="reviewExplanationLabel" class="review-card-label"><i class="fas fa-book-open" aria-hidden="true"></i> คำอธิบาย</h4>
+                                <p id="reviewExplanation"></p>
+                            </section>
+                        </div>
+                        <div id="reviewNoQuestions" class="review-empty-state hidden" role="status">
+                            <div><i class="fas fa-filter-circle-xmark" aria-hidden="true"></i><p>ไม่มีข้อสอบในสถานะนี้</p></div>
+                        </div>
+                        <footer class="review-main-footer">
+                            <button id="reviewPreviousFooterButton" type="button" class="game-action"><i class="fas fa-chevron-left" aria-hidden="true"></i> ข้อก่อนหน้า</button>
+                            <button id="soloReviewReportButton" type="button" class="game-action review-report-button" onclick="returnFromKnowledgeReview()"><i class="fas fa-chart-column" aria-hidden="true"></i> ดูรายงานผล</button>
+                            <button id="reviewNextFooterButton" type="button" class="game-action">ข้อถัดไป <i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+                        </footer>
+                    </div>
                 </div>
             </div>
-
-            <!-- Leaderboard Top 3 -->
-            <div class="bg-slate-800/70 border border-slate-700 rounded-2xl p-4 sm:p-5">
-                <h3 class="text-base font-bold text-white mb-3 flex items-center gap-2">
-                    <i class="fas fa-crown text-yellow-400"></i> ตารางอันดับสูงสุด (Leaderboard Top 3)
-                </h3>
-                <div id="leaderboardList" class="space-y-2">
-                    <!-- Dynamic Leaderboard Content -->
+            <div id="teamworkReviewContent" class="hidden">
+                <header class="review-header teamwork-review-header">
+                    <button id="teamworkReviewBackButton" type="button" class="teamwork-review-back">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i><span>กลับเมนู</span>
+                    </button>
+                    <div class="review-header-copy">
+                        <h1 id="teamworkKnowledgeReviewTitle" tabindex="-1">ทบทวนความรู้</h1>
+                        <p>ตรวจสอบคำตอบและทบทวนความรู้ของทีม</p>
+                        <span class="teamwork-review-mode"><i class="fas fa-people-group" aria-hidden="true"></i> โหมด Teamwork</span>
+                    </div>
+                    <span aria-hidden="true"></span>
+                </header>
+                <div class="teamwork-review-stats" aria-label="สรุปผลการตอบของทีม">
+                    <div class="teamwork-review-stat">
+                        <i class="fas fa-list-ol" aria-hidden="true"></i>
+                        <div><strong id="teamworkReviewTotal">0</strong><span>คำถามทั้งหมด</span></div>
+                    </div>
+                    <div class="teamwork-review-stat is-correct">
+                        <i class="fas fa-circle-check" aria-hidden="true"></i>
+                        <div><strong id="teamworkReviewCorrect">0</strong><span>ตอบถูก</span></div>
+                    </div>
+                    <div class="teamwork-review-stat is-wrong">
+                        <i class="fas fa-circle-xmark" aria-hidden="true"></i>
+                        <div><strong id="teamworkReviewWrong">0</strong><span>ตอบผิด</span></div>
+                    </div>
+                </div>
+                <div class="teamwork-review-toolbar">
+                    <div class="teamwork-review-filters" role="group" aria-label="กรองสถานะคำตอบ">
+                        <button type="button" class="teamwork-review-filter" data-teamwork-review-filter="all" aria-pressed="true">
+                            ทั้งหมด <span id="teamworkReviewAllCount" class="teamwork-review-filter-count">(0)</span>
+                        </button>
+                        <button type="button" class="teamwork-review-filter" data-teamwork-review-filter="correct" aria-pressed="false">
+                            ตอบถูก <span id="teamworkReviewCorrectCount" class="teamwork-review-filter-count">(0)</span>
+                        </button>
+                        <button type="button" class="teamwork-review-filter" data-teamwork-review-filter="wrong" aria-pressed="false">
+                            ตอบผิด <span id="teamworkReviewWrongCount" class="teamwork-review-filter-count">(0)</span>
+                        </button>
+                        <button type="button" class="teamwork-review-filter" data-teamwork-review-filter="unanswered" aria-pressed="false">
+                            ไม่ได้ตอบ <span id="teamworkReviewUnansweredCount" class="teamwork-review-filter-count">(0)</span>
+                        </button>
+                    </div>
+                    <label class="teamwork-review-category-wrap" for="teamworkReviewCategory">
+                        <span>หมวดหมู่</span>
+                        <select id="teamworkReviewCategory" class="teamwork-review-category" aria-label="กรองตามหมวดหมู่">
+                            <option value="all">ทุกหมวดหมู่</option>
+                        </select>
+                    </label>
+                </div>
+                <div id="teamworkReviewGrid" class="teamwork-review-grid" aria-label="รายการการ์ดความรู้"></div>
+                <div class="teamwork-review-footer">
+                    <button id="teamworkReviewContinueButton" type="button" class="teamwork-review-finish">
+                        <span>จบการนำเสนอ</span><i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
+        </section>
 
-            <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                <button onclick="restartQuiz()" onmouseenter="playHoverSound()" 
-                    class="btn-vibrant flex-1 bg-gradient-to-r from-brand-purple to-indigo-600 text-white font-bold py-3.5 rounded-xl border-b-4 border-indigo-900 flex items-center justify-center gap-2">
-                    <i class="fas fa-redo"></i> ทำควิซอีกครั้ง
-                </button>
-                <button onclick="goHome()" onmouseenter="playHoverSound()" 
-                    class="btn-vibrant flex-1 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-bold py-3.5 rounded-xl border-b-4 border-slate-900 flex items-center justify-center gap-2">
-                    <i class="fas fa-home"></i> กลับหน้าแรก
-                </button>
+        <section id="teamworkSummaryScreen" class="hidden game-panel space-y-4" aria-labelledby="teamworkSummaryTitle">
+            <h1 id="teamworkSummaryTitle" class="text-2xl sm:text-3xl text-center">สรุปผล Teamwork</h1>
+            <p>การนำเสนอคำถามครบทั้ง 10 ข้อแล้ว ตรวจสอบคำตอบที่ทีมเลือกและทบทวนความรู้ได้จากปุ่มด้านล่าง</p>
+            <div class="mode-screen-actions">
+                <button type="button" class="game-action" onclick="openKnowledgeReview()">ทบทวนความรู้</button>
+                <button type="button" class="game-action" onclick="restartQuiz()">เล่นอีกครั้ง</button>
+                <button type="button" class="game-action" onclick="showModeSelection()">กลับไปหน้าเมนู</button>
             </div>
         </section>
 
     </main>
+
+    <div id="teamworkReviewModalOverlay" class="teamwork-review-overlay" hidden>
+        <section id="teamworkReviewModal" class="teamwork-review-modal" role="dialog" aria-modal="true"
+            aria-labelledby="teamworkReviewModalTitle" aria-describedby="teamworkReviewModalMeta" tabindex="-1">
+            <header class="teamwork-review-modal-header">
+                <div class="teamwork-review-modal-heading">
+                    <h2 id="teamworkReviewModalTitle">รายละเอียดคำถาม</h2>
+                    <p id="teamworkReviewModalMeta"></p>
+                </div>
+                <button id="teamworkReviewModalClose" type="button" class="teamwork-review-modal-close" aria-label="ปิดรายละเอียด">×</button>
+            </header>
+            <div class="teamwork-review-modal-body">
+                <section class="teamwork-review-detail" aria-labelledby="teamworkReviewQuestionLabel">
+                    <h3 id="teamworkReviewQuestionLabel"><i class="fas fa-circle-question" aria-hidden="true"></i> คำถาม</h3>
+                    <p id="teamworkReviewModalQuestion"></p>
+                </section>
+                <section class="teamwork-review-detail is-correct" aria-labelledby="teamworkReviewAnswerLabel">
+                    <h3 id="teamworkReviewAnswerLabel"><i class="fas fa-circle-check" aria-hidden="true"></i> คำตอบที่ถูกต้อง</h3>
+                    <p id="teamworkReviewModalAnswer"></p>
+                </section>
+                <section class="teamwork-review-detail is-selected" aria-labelledby="teamworkReviewSelectedLabel">
+                    <h3 id="teamworkReviewSelectedLabel"><i class="fas fa-users" aria-hidden="true"></i> คำตอบที่ทีมเลือก</h3>
+                    <p id="teamworkReviewModalSelected"></p>
+                </section>
+                <section class="teamwork-review-detail is-explanation" aria-labelledby="teamworkReviewExplanationLabel">
+                    <h3 id="teamworkReviewExplanationLabel"><i class="fas fa-book-open" aria-hidden="true"></i> คำใบ้ / คำอธิบายเพิ่มเติม</h3>
+                    <p id="teamworkReviewModalExplanation"></p>
+                </section>
+            </div>
+            <footer class="teamwork-review-modal-nav">
+                <button id="teamworkReviewModalPrevious" type="button"><i class="fas fa-chevron-left" aria-hidden="true"></i> ข้อก่อนหน้า</button>
+                <button id="teamworkReviewModalNext" type="button">ข้อถัดไป <i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+            </footer>
+        </section>
+    </div>
 
     <!-- Notification Toast / Custom Alert -->
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-700 text-white px-5 py-3 rounded-2xl shadow-2xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-3">
@@ -1108,23 +2249,25 @@
             }, reducedMotion ? 0 : 480);
         }
 
+        function returnToClosedScroll() {
+            playClickSound();
+            isOpeningScroll = false;
+            const openButton = document.getElementById('openScrollButton');
+            openButton.disabled = false;
+            openButton.classList.remove('is-opening');
+            document.getElementById('introOpenStage').classList.add('hidden');
+            document.getElementById('introClosedStage').classList.remove('hidden');
+            document.getElementById('openScrollButton').focus();
+        }
+
         function enterWelcomeScreen() {
             playClickSound();
-            document.getElementById('introExperience').classList.add('hidden');
-            document.getElementById('gameMain').classList.remove('hidden');
-            document.getElementById('gameMain').classList.add('is-entry-screen');
-            document.body.classList.add('entry-screen-active');
-            document.querySelector('#welcomeScreen .start-game-art').focus();
+            showModeSelection();
         }
 
         function returnToQrScreen() {
             playClickSound();
-            document.getElementById('gameMain').classList.add('hidden');
-            document.getElementById('introExperience').classList.remove('hidden');
-            document.getElementById('introClosedStage').classList.add('hidden');
-            document.getElementById('introOpenStage').classList.remove('hidden');
-            document.body.classList.add('entry-screen-active');
-            document.getElementById('introQrButton').focus();
+            showModeSelection();
         }
 
         let qrModalReturnFocus = null;
@@ -1421,9 +2564,6 @@
             // Render Review Answers List
             renderReviewAnswers();
 
-            // Save & Render Leaderboard Top 3
-            saveToLeaderboard(playerName, score, accuracy);
-            renderLeaderboard();
         }
 
         // Toggle Review Answers Panel
@@ -1478,46 +2618,6 @@
                         <div class="quiz-explanation-card">
                             <div class="quiz-explanation-label"><i class="fas fa-info-circle" aria-hidden="true"></i> คำอธิบาย</div>
                             <p class="quiz-explanation-text">${q.hint}</p>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Leaderboard Top 3 storage
-        function saveToLeaderboard(name, score, accuracy) {
-            let leaderboard = JSON.parse(localStorage.getItem('ss_quiz_leaderboard_top3') || '[]');
-            leaderboard.push({ name, score, accuracy, date: new Date().toLocaleDateString() });
-            leaderboard.sort((a, b) => b.score - a.score);
-            leaderboard = leaderboard.slice(0, 3); // Strictly Top 3
-            localStorage.setItem('ss_quiz_leaderboard_top3', JSON.stringify(leaderboard));
-        }
-
-        function renderLeaderboard() {
-            const list = document.getElementById('leaderboardList');
-            const leaderboard = JSON.parse(localStorage.getItem('ss_quiz_leaderboard_top3') || '[]');
-            
-            if (leaderboard.length === 0) {
-                list.innerHTML = `<div class="text-slate-500 text-sm text-center py-2">ยังไม่มีข้อมูลอันดับ</div>`;
-                return;
-            }
-
-            const crownColors = ["text-yellow-400", "text-slate-300", "text-amber-600"];
-            const avatars = ["🎓", "📚", "🌟"];
-
-            list.innerHTML = leaderboard.map((item, index) => {
-                const isCurrentPlayer = item.name === playerName && index === leaderboard.findIndex(i => i.name === playerName && i.score === item.score);
-
-                return `
-                    <div class="flex items-center justify-between p-3 rounded-xl ${isCurrentPlayer ? 'bg-brand-purple/20 border border-brand-purple/50' : 'bg-slate-900/50'} text-sm">
-                        <div class="flex items-center gap-3">
-                            <span class="text-lg">${avatars[index]}</span>
-                            <i class="fas fa-crown ${crownColors[index]}"></i>
-                            <span class="font-semibold ${isCurrentPlayer ? 'text-brand-pink font-bold' : 'text-slate-200'}">${item.name}</span>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <span class="text-xs text-slate-400 font-medium">${item.accuracy}% Acc</span>
-                            <span class="font-outfit font-bold text-brand-yellow">${item.score} pts</span>
                         </div>
                     </div>
                 `;
@@ -1615,6 +2715,11 @@
                 return;
             }
 
+            const quizScreen = document.getElementById('quizScreen');
+            if (quizScreen.classList.contains('solo-mode') || quizScreen.classList.contains('teamwork-mode')) {
+                return;
+            }
+
             if (!/^[1-4]$/.test(event.key) || document.getElementById('quizScreen').classList.contains('hidden')) {
                 return;
             }
@@ -1644,12 +2749,12 @@
         window.matchMedia('(max-width: 640px)').addEventListener('change', updateSoundControlLayout);
         updateAudioUI();
         document.getElementById('openScrollButton').addEventListener('click', openIntroScroll);
-        document.getElementById('introNextButton').addEventListener('click', enterWelcomeScreen);
-        document.getElementById('introQrButton').addEventListener('click', openQrModal);
+        document.getElementById('soloQrButton').addEventListener('click', openQrModal);
         document.getElementById('qrModalClose').addEventListener('click', closeQrModal);
         document.getElementById('qrModal').addEventListener('click', event => {
             if (event.target === event.currentTarget) closeQrModal();
         });
     </script>
+    <script src="game-modes.js"></script>
 </body>
 </html>

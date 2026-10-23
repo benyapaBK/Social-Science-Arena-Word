@@ -311,7 +311,8 @@
             deadlineAt: null,
             startedAt: new Date().toISOString(),
             completedAt: null,
-            revealed: false
+            revealed: false,
+            teamAttempts: []
         };
     }
 
@@ -430,6 +431,7 @@
         document.getElementById('confirmSoloAnswerButton').classList.toggle('hidden', run.mode !== 'solo');
         if (run.mode === 'teamwork') {
             renderTeamworkControls();
+            lockTeamWrongOptions();
         } else {
             document.getElementById('gameMain').classList.remove('teamwork-active');
             renderSoloProgress();
@@ -524,34 +526,82 @@
         window.setTimeout(nextQuestion, 1200);
     }
 
+    const TEAM_POINTS_FIRST = 10;
+    const TEAM_POINTS_SECOND = 5;
+    const TEAM_MAX_ATTEMPTS = 2;
+
+    function teamworkTotalScore(answers) {
+        return (answers || []).reduce((total, answer) => total + (answer.points || 0), 0);
+    }
+
+    function lockTeamWrongOptions() {
+        const buttons = document.querySelectorAll('#optionsGrid .option-btn');
+        (run.teamAttempts || []).forEach(index => {
+            const button = buttons[index];
+            if (!button) return;
+            button.disabled = true;
+            button.setAttribute('aria-pressed', 'true');
+            button.className = 'option-btn btn-vibrant w-full text-left p-4 rounded-2xl border-2 flex items-center justify-between bg-rose-600/30 border-rose-500 text-rose-200 is-wrong-answer';
+            button.querySelector('.check-icon').className = 'fas fa-times-circle text-rose-400 check-icon';
+        });
+    }
+
+    function recordTeamAnswer(isCorrect, isTimeout) {
+        if (!Array.isArray(run.answers)) run.answers = [];
+        const attempts = run.teamAttempts || [];
+        const points = isCorrect ? (attempts.length === 1 ? TEAM_POINTS_SECOND : TEAM_POINTS_FIRST) : 0;
+        run.answers.push({
+            questionIndex: run.currentQuestionIndex,
+            selectedIndex: attempts.length ? attempts[attempts.length - 1] : null,
+            attempts: attempts.slice(),
+            correctIndex: quizData[run.currentQuestionIndex].correct,
+            isCorrect,
+            isTimeout: isTimeout && !attempts.length,
+            points,
+            timeTakenMs: isTimeout ? questionLimit() : questionElapsedMs()
+        });
+        return points;
+    }
+
     function selectTeamOption(selectedIndex) {
         if (!run || run.mode !== 'teamwork' || run.status !== 'playing' || !canAnswer) return;
-        canAnswer = false;
-        stopCountdown();
+        if (!Array.isArray(run.teamAttempts)) run.teamAttempts = [];
+        if (run.teamAttempts.includes(selectedIndex)) return;
         const questionIndex = run.currentQuestionIndex;
         const correctIndex = quizData[questionIndex].correct;
         const isCorrect = selectedIndex === correctIndex;
-        if (!Array.isArray(run.answers)) run.answers = [];
-        run.answers.push({
-            questionIndex,
-            selectedIndex,
-            correctIndex,
-            isCorrect,
-            isTimeout: false,
-            timeTakenMs: questionElapsedMs()
-        });
-        run.revealed = true;
-        run.status = 'paused';
-        paintAnswer(selectedIndex, correctIndex);
-        renderTeamworkControls();
-        saveRun(true);
+        if (!isCorrect) run.teamAttempts.push(selectedIndex);
         if (isCorrect) {
+            const attemptNo = run.teamAttempts.length + 1;
+            canAnswer = false;
+            stopCountdown();
+            const points = recordTeamAnswer(true, false);
+            run.answers[run.answers.length - 1].selectedIndex = selectedIndex;
+            run.revealed = true;
+            run.status = 'paused';
+            paintAnswer(selectedIndex, correctIndex);
+            renderTeamworkControls();
+            saveRun(true);
             playCorrectSound();
-            showToast('ตอบถูกต้อง!', 'success');
-        } else {
-            playWrongSound();
-            showToast(`คำตอบที่ถูกต้องคือ ${quizData[run.currentQuestionIndex].options[correctIndex]}`, 'warning');
+            showToast(`ตอบถูกต้อง! ตอบครั้งที่ ${attemptNo} ได้ ${points} คะแนน`, 'success');
+            return;
         }
+        playWrongSound();
+        if (run.teamAttempts.length >= TEAM_MAX_ATTEMPTS) {
+            canAnswer = false;
+            stopCountdown();
+            recordTeamAnswer(false, false);
+            run.revealed = true;
+            run.status = 'paused';
+            paintAnswer(selectedIndex, correctIndex);
+            renderTeamworkControls();
+            saveRun(true);
+            showToast(`ตอบผิดครบ 2 ครั้ง ได้ 0 คะแนน — คำตอบที่ถูกต้องคือ ${quizData[questionIndex].options[correctIndex]}`, 'warning');
+            return;
+        }
+        lockTeamWrongOptions();
+        saveRun(true);
+        showToast('ตอบผิด! เหลือโอกาสอีก 1 ครั้ง (ตอบถูกได้ 5 คะแนน)', 'warning');
     }
 
     function paintAnswer(selectedIndex, correctIndex) {
@@ -658,17 +708,7 @@
     function revealTeamAnswer(fromTimeout) {
         if (!run || run.mode !== 'teamwork' || run.revealed) return;
         stopCountdown();
-        if (fromTimeout) {
-            if (!Array.isArray(run.answers)) run.answers = [];
-            run.answers.push({
-                questionIndex: run.currentQuestionIndex,
-                selectedIndex: null,
-                correctIndex: quizData[run.currentQuestionIndex].correct,
-                isCorrect: false,
-                isTimeout: true,
-                timeTakenMs: questionLimit()
-            });
-        }
+        if (fromTimeout) recordTeamAnswer(false, true);
         run.revealed = true;
         run.status = 'paused';
         const correctIndex = quizData[run.currentQuestionIndex].correct;
@@ -689,6 +729,7 @@
         }
         run.remainingTimeMs = TEAM_QUESTION_TIME_MS;
         run.revealed = false;
+        run.teamAttempts = [];
         run.status = 'playing';
         loadQuestion();
     }
@@ -742,6 +783,7 @@
         timer = null;
         run.status = 'completed';
         run.completedAt = new Date().toISOString();
+        run.score = teamworkTotalScore(run.answers);
         latestResult = JSON.parse(JSON.stringify(run));
         removeSavedRun();
         run = latestResult;
@@ -812,7 +854,8 @@
         quizData.forEach((_, index) => {
             counts[teamworkReviewAnswerStatus(teamworkReviewAnswerFor(index))] += 1;
         });
-        document.getElementById('teamworkReviewTotal').textContent = String(counts.all);
+        document.getElementById('teamworkReviewTotal').textContent =
+            `${teamworkTotalScore(latestResult.answers)} / ${quizData.length * TEAM_POINTS_FIRST}`;
         document.getElementById('teamworkReviewCorrect').textContent = String(counts.correct);
         document.getElementById('teamworkReviewWrong').textContent = String(counts.wrong);
         document.getElementById('teamworkReviewAllCount').textContent = `(${counts.all})`;
